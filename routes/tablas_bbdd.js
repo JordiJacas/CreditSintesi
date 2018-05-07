@@ -18,19 +18,19 @@ con.connect(function(err) {
     console.log("Table created");
   });
 
-  var sql = "CREATE TABLE invitacionesPartidas (id INT AUTO_INCREMENT PRIMARY KEY, id_usuario1 INT, id_usuario2 INT)";
+  var sql = "CREATE TABLE invitacionesPartidas (id INT AUTO_INCREMENT PRIMARY KEY, id_usuario1 INT NOT NULL, id_usuario2 INT NOT NULL)";
   con.query(sql, function (err, result) {
     if (err) throw err;
     console.log("Table created");
   });
 
-  var sql = "CREATE TABLE partidas (id INT AUTO_INCREMENT PRIMARY KEY, id_personaje1 INT, id_personaje2 INT)";
+  var sql = "CREATE TABLE partidas (id INT AUTO_INCREMENT PRIMARY KEY, id_personaje1 INT NOT NULL, id_personaje2 INT NOT NULL)";
   con.query(sql, function (err, result) {
     if (err) throw err;
     console.log("Table created");
   });
 
-  var sql = "CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), email VARCHAR(255), password VARCHAR(255), token TEXT)";
+  var sql = "CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, token TEXT)";
   con.query(sql, function (err, result) {
     if (err) throw err;
     console.log("Table created");
