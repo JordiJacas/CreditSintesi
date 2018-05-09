@@ -11,7 +11,6 @@
   "dependencies": {
     "express": "^4.16.3",
     "mysql": "^2.15.0",
-    "phaser": "^3.6.0",
     "pug": "^2.0.3",
     "socket.io": "^2.1.0"
   }
