@@ -1,6 +1,8 @@
 var Game = {}
 var cursors;
-
+var velocity = 2
+var test;
+var obstacleID = 0;
 
 Game.init = function(){
     game.stage.disableVisibilityChange = true;
@@ -15,39 +17,27 @@ Game.preload = function(){
 
 Game.create = function(){
 	Game.playerMap = {};
+    Game.obstacleMap = {};
 	game.add.image(0, 0, 'espace');
-	Client.askNewPlayer();
+	//Client.askNewPlayer();
 
+    //setTimeout(Client.askNewObstacle, 3000);
+    setTimeout(function(){setInterval(Client.askNewObstacle, 3000);}, 3000);
 	cursors = game.input.keyboard.createCursorKeys();	
 };
 
 
 Game.update = function(){
-	if (cursors.left.isDown)
-    {
-       //Game.playerMap[id].x -= 1;
-       Client.sendClick()
-    }
-    else if (cursors.right.isDown)
-    {	
-        //ame.playerMap[id].x += 1;
-    }
-    else if (cursors.up.isDown)
-    {
-    	//Game.playerMap[id].y -= 1;
-    }
-    else if (cursors.down.isDown)
-    {
-    	//Game.playerMap[id].y += 1;
-    }
+    Client.sendClick();
 };
 
 Game.movePlayer = function(id){
 
-	Game.playerMap[id].x -= 1;
+	if(cursors.left.isDown)Game.playerMap[id].x -= velocity;
+    else if(cursors.right.isDown)Game.playerMap[id].x +=  velocity;
+    else if(cursors.up.isDown)Game.playerMap[id].y -= velocity;
+    else if(cursors.down.isDown)Game.playerMap[id].y += velocity;
 };
-
-
 
 Game.addNewPlayer = function(id,x,y){
     Game.playerMap[id] = game.add.sprite(x,y,'gris');
@@ -59,3 +49,19 @@ Game.removePlayer = function(id){
     Game.playerMap[id].destroy();
     delete Game.playerMap[id];
 };
+
+Game.addNewObstacle = function(id,x,y){
+    Game.obstacleMap[id] = game.add.sprite(x,y,'lila');
+    Game.obstacleMap[id].width = 50;
+    Game.obstacleMap[id].height = 50;
+}
+
+Game.moveObstacle = function(id){
+    Game.obstacleMap[id].x 
+    Game.obstacleMap[id].y
+}
+
+Game.removeObstacle = function(id){
+    Game.obstacleMap[id].destroy();
+    delete Game.obstacleMap[id];
+}

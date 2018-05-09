@@ -11,6 +11,7 @@ app.get('/', function (req, res) {
 })
 
 server.lastPlayderID = 0;
+server.lastObstacleID = 0;
 
 io.on('connection', function(socket){
   console.log('a user connected');
@@ -21,11 +22,12 @@ io.on('connection', function(socket){
             x: randomInt(100,400),
             y: randomInt(100,400)
         };
+        
         socket.emit('allplayers',getAllPlayers());
-        socket.broadcast.emit('newplayer',socket.player);
+        socket.broadcast.emit('newplayer',socket.obstacle);
 
         socket.on('click',function(data){
-            console.log("test");
+            //console.log("test");
             //console.log('click to '+data.x+', '+data.y);
             //socket.player.x = data.x;
             //socket.player.y = data.y;
@@ -37,6 +39,17 @@ io.on('connection', function(socket){
             io.emit('remove',socket.player.id);
         });
     });
+
+    socket.on('newobstacle', function(){
+        socket.obstacle = {
+            id: server.lastObstacleID++,
+            x: randomInt(100,400),
+            y: randomInt(100,400)
+        };
+
+        socket.emit('allobstacles',getAllObstacles());
+        socket.broadcast.emit('newobstacle',socket.obstacle);
+    })
 });
    
 server.listen(3000, function(){
@@ -54,6 +67,19 @@ function getAllPlayers(){
         if(player) players.push(player);
     });
     return players;
+}
+
+function getAllObstacles(){
+    var obstacles = [];
+
+    console.log(obstacles)
+
+    Object.keys(io.sockets.connected).forEach(function(socketID){
+        console.log(socketID)
+        var obstacle = io.sockets.connected[socketID].obstacle;
+        if(obstacle) obstacles.push(obstacle);
+    });
+    return obstacles;
 }
 
 function randomInt (low, high) {
