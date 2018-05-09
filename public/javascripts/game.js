@@ -21,8 +21,8 @@ Game.create = function(){
 	game.add.image(0, 0, 'espace');
 	//Client.askNewPlayer();
 
-    //setTimeout(Client.askNewObstacle, 3000);
-    setTimeout(function(){setInterval(Client.askNewObstacle, 3000);}, 3000);
+    Client.askNewObstacle(false);
+    //setTimeout(function(){setInterval(Client.askNewObstacle, 3000);}, 3000);
 	cursors = game.input.keyboard.createCursorKeys();	
 };
 

@@ -14,8 +14,10 @@ Client.sendClick = function(){
   Client.socket.emit('click');
 };
 
-Client.askNewObstacle = function(){
-    Client.socket.emit('newobstacle');
+Client.askNewObstacle = function(boolean){
+    
+    if(!boolean) Client.socket.emit('viewobstacle');
+    else if(boolean) Client.socket.emit('newobstacle');
 }
 
 Client.socket.on('newplayer',function(data){

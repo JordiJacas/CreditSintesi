@@ -50,6 +50,11 @@ io.on('connection', function(socket){
         socket.emit('allobstacles',getAllObstacles());
         socket.broadcast.emit('newobstacle',socket.obstacle);
     })
+
+    socket.on('viewobstacles', function(){ç
+        socket.emit('allobstacles',getAllObstacles());
+        socket.broadcast.emit('newobstacle',socket.obstacle);
+    })
 });
    
 server.listen(3000, function(){
