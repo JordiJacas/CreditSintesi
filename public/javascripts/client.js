@@ -10,15 +10,26 @@ Client.askNewPlayer = function(){
     Client.socket.emit('newplayer');
 };
 
-Client.sendClick = function(){
-  Client.socket.emit('click');
+Client.sendClick = function(data){
+  Client.socket.emit('click', data);
 };
 
-Client.askNewObstacle = function(boolean){
-    
-    if(!boolean) Client.socket.emit('viewobstacle');
-    else if(boolean) Client.socket.emit('newobstacle');
+Client.viewNewPlayer = function(){
+    Client.socket.emit('viewplayers')
 }
+
+/*Client.sendMoveObstacle = function(){
+    Client.socket.emit('automoveobstacle');
+}
+
+Client.askNewObstacle = function(){
+    Client.socket.emit('newobstacle');
+}
+
+Client.viewNewObstacle = function(){
+    Client.socket.emit('viewobstacle');
+}*/
+
 
 Client.socket.on('newplayer',function(data){
     Game.addNewPlayer(data.id,data.x,data.y);
@@ -29,16 +40,22 @@ Client.socket.on('allplayers',function(data){
         Game.addNewPlayer(data[i].id,data[i].x,data[i].y);
     }
 
-    Client.socket.on('move',function(data){ 
-        Game.movePlayer(data.id );
+    Client.socket.on('move',function(player, direction){ 
+        Game.movePlayer(player.id, direction);
     });
 
-    Client.socket.on('remove',function(id){
+    Client.socket.on('removeplayer',function(id){
         Game.removePlayer(id);
     });
 });
 
-Client.socket.on('newobstacle',function(data){
+
+
+
+
+
+
+/*Client.socket.on('newobstacle',function(data){
     Game.addNewObstacle(data.id,data.x,data.y);
 });
 
@@ -47,11 +64,11 @@ Client.socket.on('allobstacles',function(data){
         Game.addNewObstacle(data[i].id,data[i].x,data[i].y);
     }
 
-    /*Client.socket.on('move',function(data){ 
-        Game.movePlayer(data.id );
+    Client.socket.on('moveobstacle',function(data){ 
+        Game.moveObstacle(data.id, data.velocityX, data.velocityY, data.directionX, data.directionY);
     });
 
-    Client.socket.on('remove',function(id){
-        Game.removePlayer(id);
-    });*/
-});
+    /*Client.socket.on('remove',function(id){
+        Game.removeObstacle(id);
+    });
+});*/
