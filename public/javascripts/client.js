@@ -32,12 +32,13 @@ Client.viewNewObstacle = function(){
 
 
 Client.socket.on('newplayer',function(data){
-    Game.addNewPlayer(data.id,data.x,data.y);
+    Game.addNewPlayer(data.id, data.x, data.y, false);
 });
 
-Client.socket.on('allplayers',function(data){
+Client.socket.on('allplayers',function(data, player){
     for(var i = 0; i < data.length; i++){
-        Game.addNewPlayer(data[i].id,data[i].x,data[i].y);
+        if(data[i].id == player.id) Game.addNewPlayer(data[i].id,data[i].x,data[i].y, true);
+        else Game.addNewPlayer(data[i].id,data[i].x,data[i].y, false)   ;
     }
 
     Client.socket.on('move',function(player, direction){ 

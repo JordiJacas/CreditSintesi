@@ -39,7 +39,7 @@ Game.update = function(){
 
 
 Game.detecteKey = function(){
-    
+
     if (cursors.left.isDown) Client.sendClick('left')
     else if(cursors.right.isDown) Client.sendClick('right')
     else if(cursors.up.isDown) Client.sendClick('up')
@@ -54,8 +54,11 @@ Game.movePlayer = function(id, direction){
     else if(direction === 'down') Game.playerMap[id].y += velocity;   
 };
 
-Game.addNewPlayer = function(id,x,y){
-    Game.playerMap[id] = game.add.sprite(x,y,'gris');
+Game.addNewPlayer = function(id,x,y,player){
+    
+    if(player) Game.playerMap[id] = game.add.sprite(x,y,'gris');
+    else if (!player) Game.playerMap[id] = game.add.sprite(x,y,'verde');
+    
     Game.playerMap[id].width = 50;
 	Game.playerMap[id].height = 50;
 };

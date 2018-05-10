@@ -23,7 +23,7 @@ io.on('connection', function(socket){
             y: randomInt(100,400)
         };
         
-        socket.emit('allplayers',getAllPlayers());
+        socket.emit('allplayers',getAllPlayers(), socket.player);
         socket.broadcast.emit('newplayer',socket.player);
 
         socket.on('click',function(data){
