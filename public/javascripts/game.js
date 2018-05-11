@@ -30,7 +30,7 @@ Game.update = function(){
     }
     else if (cursors.right.isDown)
     {	
-        //ame.playerMap[id].x += 1;
+        //Game.playerMap[id].x += 1;
     }
     else if (cursors.up.isDown)
     {
