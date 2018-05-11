@@ -1,7 +1,8 @@
 var Game = {}
 var cursors;
 var velocity = 2
-var test;
+var arrayObstaclesMap = [];
+var arrayPlayerMap = [];
 
 Game.init = function(){
     game.stage.disableVisibilityChange = true;
@@ -18,25 +19,22 @@ Game.create = function(){
 	Game.playerMap = {};
     Game.obstacleMap = {};
 	game.add.image(0, 0, 'espace');
-	Client.askNewPlayer();
-    //Client.askNewObstacle();
-
-
     game.physics.startSystem(Phaser.Physics.ARCADE);
-    
-
+	cursors = game.input.keyboard.createCursorKeys();
+    Client.askNewPlayer();
     
     //setTimeout(function(){setInterval(Client.askNewObstacle, 3000);}, 3000);
-	cursors = game.input.keyboard.createCursorKeys();	
+    setTimeout(Client.askNewObstacle, 3000)
+		
 };
 
 
 Game.update = function(){
-    //Client.sendMoveObstacle();
-    //Client.viewNewObstacle();
-    Game.detecteKey();    
+    Game.detecteKey();
+    Game.bounceObstacle();    
 };
 
+//Functiones para jugadores
 
 Game.detecteKey = function(){
 
@@ -51,7 +49,9 @@ Game.movePlayer = function(id, direction){
 	if(direction === 'left') Game.playerMap[id].x -= velocity;
     else if(direction === 'right') Game.playerMap[id].x +=  velocity;
     else if(direction === 'up') Game.playerMap[id].y -= velocity;
-    else if(direction === 'down') Game.playerMap[id].y += velocity;   
+    else if(direction === 'down') Game.playerMap[id].y += velocity;
+
+    Client.savePositionPlayer(Game.playerMap[id].x, Game.playerMap[id].y); 
 };
 
 Game.addNewPlayer = function(id,x,y,player){
@@ -61,40 +61,55 @@ Game.addNewPlayer = function(id,x,y,player){
     
     Game.playerMap[id].width = 50;
 	Game.playerMap[id].height = 50;
+
+    game.physics.enable(Game.playerMap[id], Phaser.Physics.ARCADE);
+    Game.playerMap[id].body.onCollide = new Phaser.Signal();
+    Game.playerMap[id].body.onCollide.add(Game.hitSprite, id);
+
+    arrayPlayerMap.push(id);
 };
+
+Game.hitSprite = function(id){
+    console.log(id);
+    console.log("Death");
+}
 
 Game.removePlayer = function(id){
     Game.playerMap[id].destroy();
     delete Game.playerMap[id];
+    //arrayPlayerMap.remove(id);
 };
+
+//Funciones para obstaculos
 
 Game.addNewObstacle = function(id,x,y){
     Game.obstacleMap[id] = game.add.sprite(x,y,'lila');
     Game.obstacleMap[id].width = 50;
     Game.obstacleMap[id].height = 50;
+
+    arrayObstaclesMap.push(id);
 }
 
 Game.moveObstacle = function(id, velocityX, velocityY, directionX, directionY){
-
-    // directionX === true --> (+)
-    // directionX === false --> (-) 
-    //if(directionX) Game.obstacleMap[id].x += velocityX;
-    //else if(!directionX) Game.obstacleMap[id].x -= velocityX;
-
-    // directionY === true --> (+)
-    // directionY === false --> (-) 
-    //if(directionY) Game.obstacleMap[id].y += velocityY;
-    //else if(!directionY) Game.obstacleMap[id].y -= velocityY;
 
     game.physics.enable(Game.obstacleMap[id], Phaser.Physics.ARCADE);
     Game.obstacleMap[id].body.collideWorldBounds = true;
     Game.obstacleMap[id].body.velocity.setTo(velocityX*100, velocityY*100);
     Game.obstacleMap[id].body.bounce.set(1);
+}
 
-    
+Game.bounceObstacle = function(){
+    for(var id = 0; id < arrayObstaclesMap.length; id++){
+        for( var id2 = 0; id2 < arrayObstaclesMap.length; id2++){
+            //console.log(id + " ------ " + id2)
+            if(arrayObstaclesMap[id] != arrayObstaclesMap[id2]) game.physics.arcade.collide(Game.obstacleMap[id], Game.obstacleMap[id2]);
+        }
+    }
+
 }
 
 Game.removeObstacle = function(id){
     Game.obstacleMap[id].destroy();
     delete Game.obstacleMap[id];
+    //arrayObstaclesMap.remove(id);
 }
