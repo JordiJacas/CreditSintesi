@@ -27,12 +27,14 @@ io.on('connection', function(socket){
         socket.broadcast.emit('newplayer',socket.player);
 
         socket.on('click',function(data){
-            //console.log("test");
-            //console.log('click to '+data.x+', '+data.y);
-            //socket.player.x = data.x;
-            //socket.player.y = data.y;
-            io.emit('move',socket.player, data);
+            io.emit('moveplayer',socket.player, data);
         });
+
+        socket.on('savePlayer', function(data){
+            //console.log('click to '+data.x+', '+data.y);
+            socket.player.x = data.x;
+            socket.player.y = data.y
+        })
 
         socket.on('disconnect',function(){
         	console.log('a user disconnect');
@@ -40,29 +42,18 @@ io.on('connection', function(socket){
         });
     });
 
-    /*socket.on('newobstacle', function(){
+    socket.on('newobstacle', function(){
         socket.obstacle = {
             id: server.lastObstacleID++,
             x: randomInt(100,400),
             y: randomInt(100,400),
             velocityX: randomInt(-5, 5),
             velocityY: randomInt(-5, 5),
-            //directionX: randomBoolean(),
-            //directionY: randomBoolean()
         };
 
         socket.emit('allobstacles',getAllObstacles());
         socket.broadcast.emit('newobstacle',socket.obstacle);
-
-        socket.on('viewobstacles', function(){
-            socket.emit('allobstacles',getAllObstacles());
-            socket.broadcast.emit('newobstacle',socket.obstacle);
-        })
-
-        socket.on('automoveobstacle', function(){
-            socket.emit('moveobstacle', socket.obstacle);
-        })
-    })*/
+    })
 });
    
 server.listen(3000, function(){
@@ -97,8 +88,4 @@ function getAllObstacles(){
 
 function randomInt (low, high) {
     return Math.floor(Math.random() * (high - low) + low);
-}
-
-function randomBoolean(){
-    return Math.random() >= 0.5;
 }
