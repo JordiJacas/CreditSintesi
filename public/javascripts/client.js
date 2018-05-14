@@ -6,6 +6,20 @@ Client.sendTest = function(data){
     //Client.socket.emit('test');
 };
 
+Client.winPlayer = function(){
+    console.log("winPlayer");
+    if(Game.arrayPlayerMap.length == 1)Client.socket.emit('win');
+}
+
+Client.socket.on('winresult', function(data){
+    console.log('win result');
+    for(var i = 0; i < data.length; i++){
+        if(data[i].id == Game.arrayPlayerMap[0]) Game.viewResult(true);
+        else Game.viewResult(false);
+    }
+})
+
+
 // Funciones para pasar de cliente/servidor o servidor/cliente para jugadores
 
 Client.askNewPlayer = function(){
@@ -19,6 +33,10 @@ Client.savePositionPlayer = function(x, y){
 Client.sendClick = function(data){
   Client.socket.emit('click', data);
 };
+
+Client.destroyPlayer = function(){
+    Client.socket.emit('destroyplayer');
+}
 
 Client.viewNewPlayer = function(){
     Client.socket.emit('viewplayers')
@@ -54,12 +72,14 @@ Client.askNewObstacle = function(){
     Client.socket.emit('newobstacle');
 }
 
+Client.removeObstacle = function(){
+    Client.socket.emit('removeobstacle');
+}
+
 Client.socket.on('newobstacle',function(data){
     Game.addNewObstacle(data.id,data.x,data.y);
     Game.moveObstacle(data.id, data.velocityX, data.velocityY, data.directionX, data.directionY);
 });
-
-
 
 Client.socket.on('allobstacles',function(data){
     for(var i = 0; i < data.length; i++){
@@ -67,7 +87,9 @@ Client.socket.on('allobstacles',function(data){
         Game.moveObstacle(data[i].id, data[i].velocityX, data[i].velocityY, data[i].directionX, data[i].directionY);
     }
 
-    Client.socket.on('removeobstacle',function(id){
-        Game.removeObstacle(id);
+    Client.socket.on('removeallobstacles',function(data){
+        for(var i = 0; i < data.length; i++){
+            Game.removeObstacle(data[i].id);
+        }
     });
 });

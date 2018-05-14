@@ -1,8 +1,8 @@
 var Game = {}
-var cursors;
-var velocity = 2
-var arrayObstaclesMap = [];
-var arrayPlayerMap = [];
+Game.cursors;
+Game.velocity = 2
+Game.arrayObstaclesMap = [];
+Game.arrayPlayerMap = [];
 
 Game.init = function(){
     game.stage.disableVisibilityChange = true;
@@ -23,16 +23,33 @@ Game.create = function(){
 	cursors = game.input.keyboard.createCursorKeys();
     Client.askNewPlayer();
     
-    //setTimeout(function(){setInterval(Client.askNewObstacle, 3000);}, 3000);
-    setTimeout(Client.askNewObstacle, 3000)
+    setTimeout(function(){Game.createNewObstacle = setInterval(Client.askNewObstacle, 3000);}, 3000);
+    //setTimeout(Client.askNewObstacle, 3000)
 		
 };
-
 
 Game.update = function(){
     Game.detecteKey();
     Game.bounceObstacle();
+    Game.bouncePlayer();
 };
+
+Game.removeElementArray = function(id, arrayName){
+    for (var elmt = 0; elmt < arrayName.length; elmt++){
+        console.log(id + "  -----" + arrayName[elmt]);
+        if(arrayName[elmt] == id) arrayName.splice(elmt, 1);
+    } 
+}
+
+Game.viewResult = function(boolean){
+    console.log("VIEW RESULT");
+    if(boolean) alert("You Win!!!");
+    else if(!boolean) alert ("You lose!!!");
+    else alert("1 player");
+
+    clearInterval(Game.createNewObstacle);
+    Client.removeObstacle();
+}
 
 //Functiones para jugadores
 
@@ -44,14 +61,24 @@ Game.detecteKey = function(){
     else if(cursors.down.isDown) Client.sendClick('down')
 }
 
+Game.bouncePlayer = function(){
+    for(var id = 0; id < Game.arrayPlayerMap.length; id++){
+        for( var id2 = 0; id2 < Game.arrayObstaclesMap.length; id2++){
+            //console.log(id + " ------ " + id2)
+            game.physics.arcade.collide(Game.playerMap[id], Game.obstacleMap[id2]);
+        }
+    }
+}
+
 Game.movePlayer = function(id, direction){
+    if(Game.playerMap[id]){
+    	if(direction === 'left') Game.playerMap[id].x -= Game.velocity;
+        else if(direction === 'right') Game.playerMap[id].x += Game.velocity;
+        else if(direction === 'up') Game.playerMap[id].y -= Game.velocity;
+        else if(direction === 'down') Game.playerMap[id].y += Game.velocity;
 
-	if(direction === 'left') Game.playerMap[id].x -= velocity;
-    else if(direction === 'right') Game.playerMap[id].x +=  velocity;
-    else if(direction === 'up') Game.playerMap[id].y -= velocity;
-    else if(direction === 'down') Game.playerMap[id].y += velocity;
-
-    Client.savePositionPlayer(Game.playerMap[id].x, Game.playerMap[id].y); 
+        Client.savePositionPlayer(Game.playerMap[id].x, Game.playerMap[id].y); 
+    }
 };
 
 Game.addNewPlayer = function(id,x,y,player){
@@ -63,53 +90,64 @@ Game.addNewPlayer = function(id,x,y,player){
 	Game.playerMap[id].height = 50;
 
     game.physics.enable(Game.playerMap[id], Phaser.Physics.ARCADE);
+    Game.playerMap[id].body.collideWorldBounds = true;
     Game.playerMap[id].body.onCollide = new Phaser.Signal();
-    Game.playerMap[id].body.onCollide.add(Game.hitSprite, id);
+    Game.playerMap[id].body.onCollide.add(Game.hitSprite, this);
 
-    arrayPlayerMap.push(id);
+    Game.arrayPlayerMap.push(id);
 };
 
-Game.hitSprite = function(id){
-    console.log(id);
-    console.log("Death");
+Game.hitSprite = function(elmt){
+    Client.destroyPlayer();
+    Client.winPlayer();
 }
 
 Game.removePlayer = function(id){
-    Game.playerMap[id].destroy();
-    delete Game.playerMap[id];
-    //arrayPlayerMap.remove(id);
+    if(Game.playerMap[id]){
+        Game.playerMap[id].destroy();
+        delete Game.playerMap[id];
+        Game.removeElementArray(id, Game.arrayPlayerMap);
+    }
 };
 
 //Funciones para obstaculos
 
 Game.addNewObstacle = function(id,x,y){
+
     Game.obstacleMap[id] = game.add.sprite(x,y,'lila');
     Game.obstacleMap[id].width = 50;
     Game.obstacleMap[id].height = 50;
 
-    arrayObstaclesMap.push(id);
+    Game.arrayObstaclesMap.push(id);
 }
 
 Game.moveObstacle = function(id, velocityX, velocityY, directionX, directionY){
 
     game.physics.enable(Game.obstacleMap[id], Phaser.Physics.ARCADE);
     Game.obstacleMap[id].body.collideWorldBounds = true;
-    Game.obstacleMap[id].body.velocity.setTo(velocityX*100, velocityY*100);
-    Game.obstacleMap[id].body.bounce.set(1);
+    //Game.obstacleMap[id].body.velocity.setTo(velocityX*100, velocityY*100);
+    //Game.obstacleMap[id].body.bounce.set(1);
+    Game.obstacleMap[id].body.onCollide = new Phaser.Signal();
+    Game.obstacleMap[id].body.onCollide.add(Game.test,  this);
+}
+
+Game.test = function(test){
+    setTimeout(test.destroy(), 1500);
 }
 
 Game.bounceObstacle = function(){
-    for(var id = 0; id < arrayObstaclesMap.length; id++){
-        for( var id2 = 0; id2 < arrayObstaclesMap.length; id2++){
-            //console.log(id + " ------ " + id2)
-            if(arrayObstaclesMap[id] != arrayObstaclesMap[id2]) game.physics.arcade.collide(Game.obstacleMap[id], Game.obstacleMap[id2]);
+    for(var id = 0; id < Game.arrayObstaclesMap.length; id++){
+        for( var id2 = 0; id2 < Game.arrayObstaclesMap.length; id2++){
+            if(Game.arrayObstaclesMap[id] != Game.arrayObstaclesMap[id2]) game.physics.arcade.collide(Game.obstacleMap[id], Game.obstacleMap[id2]);
         }
     }
-
 }
 
 Game.removeObstacle = function(id){
-    Game.obstacleMap[id].destroy();
-    delete Game.obstacleMap[id];
-    //arrayObstaclesMap.remove(id);
+
+    if(Game.obstacleMap[id]){
+        Game.obstacleMap[id].destroy();
+        delete Game.obstacleMap[id];
+        Game.removeElementArray(id, Game.arrayObstaclesMap);
+    }
 }

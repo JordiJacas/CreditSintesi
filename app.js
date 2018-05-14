@@ -36,6 +36,10 @@ io.on('connection', function(socket){
             socket.player.y = data.y
         })
 
+        socket.on('destroyplayer', function(){
+            io.emit('removeplayer', socket.player.id)
+        })
+
         socket.on('disconnect',function(){
         	console.log('a user disconnect');
             io.emit('removeplayer',socket.player.id);
@@ -53,6 +57,16 @@ io.on('connection', function(socket){
 
         socket.emit('allobstacles',getAllObstacles());
         socket.broadcast.emit('newobstacle',socket.obstacle);
+
+        socket.on('removeobstacle', function(){
+            io.emit('removeallobstacles', getAllObstacles());
+        })
+    })
+
+    socket.on('win', function(){
+        socket.emit('winresult', getAllPlayers());
+        //socket.broadcast.emit('winresult', getAllPlayers());
+        console.log("win");
     })
 });
    
@@ -62,7 +76,7 @@ server.listen(3000, function(){
 
 function getAllPlayers(){
     var players = [];
-
+    console.log("PLAYER");
     console.log(players)
 
     Object.keys(io.sockets.connected).forEach(function(socketID){
@@ -75,7 +89,7 @@ function getAllPlayers(){
 
 function getAllObstacles(){
     var obstacles = [];
-
+    console.log("OBSTACLES")
     console.log(obstacles)
 
     Object.keys(io.sockets.connected).forEach(function(socketID){
