@@ -3,3 +3,7 @@ canvas{
     height: 600px;
     border: 5px solid black;
 }
+
+#start{
+	position: absolute;
+}
