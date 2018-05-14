@@ -4,12 +4,12 @@ Game.velocity = 2
 Game.arrayObstaclesMap = [];
 Game.arrayPlayerMap = [];
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, document.getElementById('game'));
+//var game = new Phaser.Game(800, 600, Phaser.AUTO, document.getElementById('game'));
 
 Game.iniciar = function(){
 
-    game.state.add('Game', Game);
-    game.state.start('Game');
+    //game.state.add('Game', Game);
+    //game.state.start('Game');
 }
 
 Game.init = function(){
