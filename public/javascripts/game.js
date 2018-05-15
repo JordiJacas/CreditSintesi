@@ -24,7 +24,7 @@ Game.create = function(){
     Client.askNewPlayer();
     
     //setTimeout(function(){Game.createNewObstacle = setInterval(Client.askNewObstacle, 3000);}, 3000);
-    setTimeout(Client.askNewObstacle, 3000)
+    //setTimeout(Client.askNewObstacle, 3000)
 		
 };
 
@@ -47,7 +47,6 @@ Game.viewResult = function(boolean){
     else if(!boolean) console.log("You lose!!!");
 
     clearInterval(Game.createNewObstacle);
-    Client.removeObstacle();
 }
 
 //Functiones para jugadores
@@ -127,15 +126,14 @@ Game.moveObstacle = function(id, velocityX, velocityY, directionX, directionY){
 
     game.physics.enable(Game.obstacleMap[id], Phaser.Physics.ARCADE);
     Game.obstacleMap[id].body.collideWorldBounds = true;
-    //Game.obstacleMap[id].body.velocity.setTo(velocityX*100, velocityY*100);
-    //Game.obstacleMap[id].body.bounce.set(1);
+    Game.obstacleMap[id].body.velocity.setTo(velocityX*100, velocityY*100);
+    Game.obstacleMap[id].body.bounce.set(1);
     Game.obstacleMap[id].body.onCollide = new Phaser.Signal();
     Game.obstacleMap[id].body.onCollide.add(Game.hitSpriteObstacle,  this);
 }
 
 Game.hitSpriteObstacle = function(obstacle1, obstacle2){
     obstacle1.kill();
-    obstacle.kill();
 }
 
 Game.bounceObstacle = function(){

@@ -26,6 +26,8 @@ io.on('connection', function(socket){
         socket.emit('allplayers',getAllPlayers(), socket.player);
         socket.broadcast.emit('newplayer',socket.player);
 
+        socket.emit('startObstacles', getAllPlayers().length);
+
         socket.on('click',function(data){
             io.emit('moveplayer',socket.player, data);
         });
@@ -51,15 +53,15 @@ io.on('connection', function(socket){
             id: server.lastObstacleID++,
             x: randomInt(100,400),
             y: randomInt(100,400),
-            velocityX: randomInt(-5, 5),
-            velocityY: randomInt(-5, 5),
+            velocityX: randomInt(-3, 3),
+            velocityY: randomInt(-3, 3),
         };
 
         socket.emit('allobstacles',getAllObstacles());
         socket.broadcast.emit('newobstacle',socket.obstacle);
 
         socket.on('removeobstacle', function(){
-            io.emit('removeallobstacles', getAllObstacles());
+            socket.emit('removeallobstacles', getAllObstacles());
         })
     })
 

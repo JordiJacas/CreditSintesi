@@ -7,17 +7,19 @@ Client.sendTest = function(data){
 };
 
 Client.winPlayer = function(){
-
-    console.log("winPlayer");
-    if(1 == 1)Client.socket.emit('win');
+    if(Game.arrayPlayerMap.length == 1)Client.socket.emit('win');
+    Client.removeObstacle();
 }
 
 Client.socket.on('winresult', function(id){
-        console.log(id);
-        if(Game.playerMap[id]) Game.viewResult(true);
-        else Game.viewResult(false);
+    if(Game.playerMap[id]) Game.viewResult(true);
+    else Game.viewResult(false);
 })
 
+Client.socket.on('startObstacles', function(data){
+    console.log(data);
+    if(data == 2) setTimeout(function(){Game.createNewObstacle = setInterval(Client.askNewObstacle, 3000);}, 6000);
+})
 
 // Funciones para pasar de cliente/servidor o servidor/cliente para jugadores
 
@@ -72,6 +74,7 @@ Client.askNewObstacle = function(){
 }
 
 Client.removeObstacle = function(){
+    console.log("removeObstacle");
     Client.socket.emit('removeobstacle');
 }
 
@@ -87,6 +90,7 @@ Client.socket.on('allobstacles',function(data){
     }
 
     Client.socket.on('removeallobstacles',function(data){
+        console.log("removeallobstacles");
         for(var i = 0; i < data.length; i++){
             Game.removeObstacle(data[i].id);
         }
