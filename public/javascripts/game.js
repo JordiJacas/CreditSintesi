@@ -23,29 +23,28 @@ Game.create = function(){
 	cursors = game.input.keyboard.createCursorKeys();
     Client.askNewPlayer();
     
-    setTimeout(function(){Game.createNewObstacle = setInterval(Client.askNewObstacle, 3000);}, 3000);
-    //setTimeout(Client.askNewObstacle, 3000)
+    //setTimeout(function(){Game.createNewObstacle = setInterval(Client.askNewObstacle, 3000);}, 3000);
+    setTimeout(Client.askNewObstacle, 3000)
 		
 };
 
 Game.update = function(){
     Game.detecteKey();
-    Game.bounceObstacle();
+    //Game.bounceObstacle();
     Game.bouncePlayer();
 };
 
 Game.removeElementArray = function(id, arrayName){
     for (var elmt = 0; elmt < arrayName.length; elmt++){
-        console.log(id + "  -----" + arrayName[elmt]);
+        //console.log(id + "  -----" + arrayName[elmt]);
         if(arrayName[elmt] == id) arrayName.splice(elmt, 1);
     } 
 }
 
 Game.viewResult = function(boolean){
-    console.log("VIEW RESULT");
-    if(boolean) alert("You Win!!!");
-    else if(!boolean) alert ("You lose!!!");
-    else alert("1 player");
+
+    if(boolean) console.log("You Win!!!");
+    else if(!boolean) console.log("You lose!!!");
 
     clearInterval(Game.createNewObstacle);
     Client.removeObstacle();
@@ -92,14 +91,16 @@ Game.addNewPlayer = function(id,x,y,player){
     game.physics.enable(Game.playerMap[id], Phaser.Physics.ARCADE);
     Game.playerMap[id].body.collideWorldBounds = true;
     Game.playerMap[id].body.onCollide = new Phaser.Signal();
-    Game.playerMap[id].body.onCollide.add(Game.hitSprite, this);
+    Game.playerMap[id].body.onCollide.add(Game.hitSpritePlayer, this);
 
     Game.arrayPlayerMap.push(id);
 };
 
-Game.hitSprite = function(elmt){
-    Client.destroyPlayer();
-    Client.winPlayer();
+Game.hitSpritePlayer = function(player, obstacle){
+    if(player.key == "gris"){
+        Client.destroyPlayer();
+        player.kill();
+    }
 }
 
 Game.removePlayer = function(id){
@@ -108,6 +109,7 @@ Game.removePlayer = function(id){
         delete Game.playerMap[id];
         Game.removeElementArray(id, Game.arrayPlayerMap);
     }
+    Client.winPlayer();
 };
 
 //Funciones para obstaculos
@@ -128,11 +130,12 @@ Game.moveObstacle = function(id, velocityX, velocityY, directionX, directionY){
     //Game.obstacleMap[id].body.velocity.setTo(velocityX*100, velocityY*100);
     //Game.obstacleMap[id].body.bounce.set(1);
     Game.obstacleMap[id].body.onCollide = new Phaser.Signal();
-    Game.obstacleMap[id].body.onCollide.add(Game.test,  this);
+    Game.obstacleMap[id].body.onCollide.add(Game.hitSpriteObstacle,  this);
 }
 
-Game.test = function(test){
-    setTimeout(test.destroy(), 1500);
+Game.hitSpriteObstacle = function(obstacle1, obstacle2){
+    obstacle1.kill();
+    obstacle.kill();
 }
 
 Game.bounceObstacle = function(){

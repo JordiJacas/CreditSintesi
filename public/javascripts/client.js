@@ -7,16 +7,15 @@ Client.sendTest = function(data){
 };
 
 Client.winPlayer = function(){
+
     console.log("winPlayer");
-    if(Game.arrayPlayerMap.length == 1)Client.socket.emit('win');
+    if(1 == 1)Client.socket.emit('win');
 }
 
-Client.socket.on('winresult', function(data){
-    console.log('win result');
-    for(var i = 0; i < data.length; i++){
-        if(data[i].id == Game.arrayPlayerMap[0]) Game.viewResult(true);
+Client.socket.on('winresult', function(id){
+        console.log(id);
+        if(Game.playerMap[id]) Game.viewResult(true);
         else Game.viewResult(false);
-    }
 })
 
 

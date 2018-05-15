@@ -64,7 +64,7 @@ io.on('connection', function(socket){
     })
 
     socket.on('win', function(){
-        socket.emit('winresult', getAllPlayers());
+        socket.emit('winresult', socket.player.id);
         //socket.broadcast.emit('winresult', getAllPlayers());
         console.log("win");
     })
