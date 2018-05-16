@@ -11,4 +11,3 @@ Modules: mysql: https://www.w3schools.com/nodejs/nodejs_mysql.asp Pharser: scrip
 Infomation: AWS Procject 2017-2018
 
 Images: BBDD: https://drive.google.com/file/d/0B54OqhefIl2pRURkeDJUYkE2UkxPZXdTVHBIZzZVOGgzbU5Z/view?usp=sharing Sketches: https://drive.google.com/file/d/0B54OqhefIl2pelBoSUVveU1TdlRYVnpGWlMwTnJWNjBUUXFB/view?usp=sharing
-

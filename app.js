@@ -51,24 +51,24 @@ io.on('connection', function(socket){
     socket.on('newobstacle', function(){
         socket.obstacle = {
             id: server.lastObstacleID++,
-            x: randomInt(100,400),
-            y: randomInt(100,400),
+            x: randomInt(0, 800),
+            y: 1,
             velocityX: randomInt(-3, 3),
             velocityY: randomInt(-3, 3),
+            type: randomInt(1,4),
         };
 
         socket.emit('allobstacles',getAllObstacles());
         socket.broadcast.emit('newobstacle',socket.obstacle);
 
         socket.on('removeobstacle', function(){
+            io.emit('removeallobstacles', getAllObstacles());
             socket.emit('removeallobstacles', getAllObstacles());
         })
     })
 
     socket.on('win', function(){
         socket.emit('winresult', socket.player.id);
-        //socket.broadcast.emit('winresult', getAllPlayers());
-        console.log("win");
     })
 });
    

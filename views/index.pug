@@ -2,5 +2,13 @@ extends layout
 
 block content
 
- //button#start(class='btn btn-success' onclick="iniciar()") Jugar
+ button#start(class='btn btn-success' onclick="Main.startGame()") Start Game
 
+ #formModal.modal
+  .modal-dialog
+    .modal-content
+      .modal-header
+        h2.title-modal
+      .modal-body
+        p.formModal
+      .modal-footer
