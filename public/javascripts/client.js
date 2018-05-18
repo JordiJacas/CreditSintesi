@@ -18,7 +18,7 @@ Client.socket.on('winresult', function(id){
 Client.socket.on('startObstacles', function(data){
     console.log("Length-Array:")
     console.log(data);
-    if(data == 2) setTimeout(Client.askNewObstacle, 1000)
+    if(data == 2){setTimeout(Client.askNewObstacle, 1000)}
 })
 
 // Funciones para pasar de cliente/servidor o servidor/cliente para jugadores

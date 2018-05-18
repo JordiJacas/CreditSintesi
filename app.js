@@ -17,7 +17,6 @@ io.on('connection', function(socket){
   
   console.log("--------------------------------------------------");
   console.log('a user connected');
-  console.log(server.lastPlayderID);
   console.log("--------------------------------------------------");
 
 	socket.on('newplayer',function(){
