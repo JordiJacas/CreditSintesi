@@ -73,7 +73,11 @@ server.lastPlayderID = 0;
 server.lastObstacleID = 0;
 
 io.on('connection', function(socket){
+  
+  console.log("--------------------------------------------------");
   console.log('a user connected');
+  console.log(server.lastPlayderID);
+  console.log("--------------------------------------------------");
 
 	socket.on('newplayer',function(){
     	socket.player = {
@@ -81,9 +85,19 @@ io.on('connection', function(socket){
             x: randomInt(100,400),
             y: randomInt(100,400)
         };
-        
+
+          console.log("--------------------------------------------------");
+          console.log('Player');
+          //console.log(socket.connected);
+          console.log("socket 2.1");
+          console.log(socket.player);
+          console.log("--------------------------------------------------");
+
+
         socket.emit('allplayers',getAllPlayers(), socket.player);
-        socket.broadcast.emit('newplayer',socket.player);
+        socket.broadcast.emit('newplayer',getAllPlayers(), socket.player);
+
+        socket.emit('startObstacles', getAllPlayers().length);
 
         socket.on('click',function(data){
             io.emit('moveplayer',socket.player, data);
@@ -95,24 +109,60 @@ io.on('connection', function(socket){
             socket.player.y = data.y
         })
 
-        socket.on('disconnect',function(){
-        	console.log('a user disconnect');
-            io.emit('removeplayer',socket.player.id);
-        });
+        socket.on('destroyplayer', function(){
+            io.emit('removeplayer', socket.player.id)
+        })
+
+        socket.on('destroyallplayers', function(){
+            io.emit('removeallplayers', getAllPlayers());
+            socket.emit('removeallplayers', getAllPlayers());
+
+            server.lastPlayderID = 0;
+            server.lastObstacleID = 0;
+
+            delete socket.player;
+            delete socket.obstacle
+
+            console.log("--------------------------------------------------");
+            console.log("Restart");
+            console.log(socket.player);
+            console.log(socket.obstacle);
+            console.log("--------------------------------------------------");
+        })
     });
 
     socket.on('newobstacle', function(){
         socket.obstacle = {
             id: server.lastObstacleID++,
-            x: randomInt(100,400),
-            y: randomInt(100,400),
-            velocityX: randomInt(-5, 5),
-            velocityY: randomInt(-5, 5),
+            x: randomInt(0, 800),
+            y: 1,
+            velocityX: randomInt(-3, 3),
+            velocityY: randomInt(-3, 3),
+            type: randomInt(1,4),
         };
+
+        console.log("--------------------------------------------------");
+        console.log("Obstacle");
+        console.log(socket.obstacle);
+        console.log("--------------------------------------------------");
 
         socket.emit('allobstacles',getAllObstacles());
         socket.broadcast.emit('newobstacle',socket.obstacle);
+
+        socket.on('removeobstacle', function(){
+            io.emit('removeallobstacles', getAllObstacles());
+            socket.emit('removeallobstacles', getAllObstacles());
+        })
     })
+
+    socket.on('win', function(){
+        socket.emit('winresult', socket.player.id);
+    })
+
+    socket.on('disconnect',function(){
+        console.log('a user disconnect');
+        //io.emit('removeplayer',socket.player.id);
+    });
 });
    
 server.listen(3000, function(){
@@ -121,11 +171,11 @@ server.listen(3000, function(){
 
 function getAllPlayers(){
     var players = [];
-
-    console.log(players)
+    //console.log("PLAYER");
+    //console.log(players)
 
     Object.keys(io.sockets.connected).forEach(function(socketID){
-        console.log(socketID)
+        //console.log(socketID)
         var player = io.sockets.connected[socketID].player;
         if(player) players.push(player);
     });
@@ -134,11 +184,11 @@ function getAllPlayers(){
 
 function getAllObstacles(){
     var obstacles = [];
-
-    console.log(obstacles)
+    //console.log("OBSTACLES")
+    //console.log(obstacles)
 
     Object.keys(io.sockets.connected).forEach(function(socketID){
-        console.log(socketID)
+        //console.log(socketID)
         var obstacle = io.sockets.connected[socketID].obstacle;
         if(obstacle) obstacles.push(obstacle);
     });
