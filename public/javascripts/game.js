@@ -31,6 +31,11 @@ Game.update = function(){
     //Game.bounceObstacle();
     Game.bouncePlayer();
 };
+
+Game.removeElementsArrays = function(){
+    Game.arrayObstaclesMap = [];
+    Game.arrayPlayerMap = [];
+}
     
 Game.removeElementArray = function(id, arrayName){
     for (var elmt = 0; elmt < arrayName.length; elmt++){
@@ -39,12 +44,12 @@ Game.removeElementArray = function(id, arrayName){
 }
 
 Game.viewResult = function(boolean){
-    var title;
-    if(boolean){console.log("You Win!!!"); title = "You Win!!!"}
-    else if(!boolean){console.log("You lose!!!"); title = "You lose!!!"}
+    var message;
+    if(boolean){console.log("You Win!!!"); message = "You Win!!!"}
+    else if(!boolean){console.log("You lose!!!"); message = "You lose!!!"}
 
     clearInterval(Game.createNewObstacle);
-    Main.endGame(title);
+    Main.endGame("Game over", message);
 }
 
 //Functiones para jugadores
@@ -106,8 +111,8 @@ Game.removePlayer = function(id){
         Game.playerMap[id].destroy();
         delete Game.playerMap[id];
         Game.removeElementArray(id, Game.arrayPlayerMap);
-    }
-    Client.winPlayer();
+        Client.winPlayer();
+    }  
 };
 
 //Funciones para obstaculos
@@ -144,7 +149,7 @@ Game.moveObstacle = function(id, velocityX, velocityY, directionX, directionY){
 
     Main.game.physics.enable(Game.obstacleMap[id], Phaser.Physics.ARCADE);
     Game.obstacleMap[id].body.collideWorldBounds = true;
-    Game.obstacleMap[id].body.velocity.setTo(velocityX*100, velocityY*100);
+    //Game.obstacleMap[id].body.velocity.setTo(velocityX*100, velocityY*100);
     Game.obstacleMap[id].body.bounce.set(1);
     Game.obstacleMap[id].body.onCollide = new Phaser.Signal();
     Game.obstacleMap[id].body.onCollide.add(Game.hitSpriteObstacle,  this);
@@ -163,6 +168,7 @@ Game.bounceObstacle = function(){
 }
 
 Game.removeObstacle = function(id){
+    console.log(id);
     if(Game.obstacleMap[id]){
         Game.obstacleMap[id].destroy();
         delete Game.obstacleMap[id];

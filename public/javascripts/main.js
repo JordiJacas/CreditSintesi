@@ -1,26 +1,18 @@
-
-/**
- * Creado por Jordi Jacas
- */
-
- /*
- * Js que ejecuta el juego
- */
-
 var Main = {};
 Main.game;
 
 Main.startGame = function(){
-	Main.game = new Phaser.Game(800, 600, Phaser.AUTO, document.getElementById('game'));
+	Main.game = new Phaser.Game(800, 600, Phaser.AUTO);
 	Main.game.state.add('Game', Game);
 	Main.game.state.start('Game');
     $('#start').hide();
 }
 
-Main.endGame = function(message){
-
-	Main.game.destroy();
-	Main.showModal("Game Over", Main.renderForm(message));
+Main.endGame = function(title, message){
+    Client.destroyAllPlayers();
+    Main.game.destroy();
+    delete Main.game;
+    Main.showModal(title, Main.renderForm(message));
 }
 
 Main.showModal = function(title,message)
@@ -36,11 +28,17 @@ Main.renderForm = function(message){
     html += '<div class="form-group" id="formLogin">';
     html += '<p class="text-center text-capitalize font-weight-light">'+ message +'</p>';
     html += '</div>';
-    html += '<button type="submit" class="btn btn-primary btn-large" id="loginBtn" onclick=Main.hideModal()>Next</button>';
+    html += '<button type="submit" class="btn btn-primary btn-large" id="loginBtn" onclick=Main.hideModal()>Menu</button>';
     return html;
 }
 
 Main.hideModal = function(){
+
+    //Mirar recargar pagina con socket.io
+    //-------------------------
+    location.reload(true);
+    //-------------------------
+    
     $("#formModal").modal("hide");
-    $('#star').show();
+    $('#start').show(); 
 }
