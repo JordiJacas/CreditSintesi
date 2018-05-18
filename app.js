@@ -2,12 +2,71 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io').listen(server);
+var mysql = require('mysql');
+
+var aes256 = require('aes256');
+
+///
+const bodyParser = require('body-parser')
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
+///
+
+var con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "mysql1234",
+  database: "NaiBoy_bbdd"
+});
 
 app.set('view engine', 'pug');
 app.use(express.static('public'));
 
 app.get('/', function (req, res) {
-  res.render('index', { title: 'Hey', message: 'Hello there!' })
+  res.render('login', { title: 'Login', message: 'Inicia la sessio' })
+})
+
+app.get('/registro', function (req, res) {
+   res.render('registro', { title: 'Registro', message: 'Hello there!' })
+})
+
+app.post('/signup', function (req, res) {
+
+    var key = 'my passphrase';
+    var plaintext = req.body.password;
+    var encrypted = aes256.encrypt(key, plaintext);
+
+    con.query("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", 
+        [req.body.name, req.body.email, encrypted], function(err, result) {
+            if (err){
+                throw err;
+            }
+            else{
+                res.redirect('/');
+                console.log('Se ha insertado el usuario correctamente!');
+            } 
+            con.end();  
+        });
+})
+
+app.post('/entrar', function (req, res) {
+
+    var username = req.body.name;
+    var password = req.body.password;
+
+    var key = 'my passphrase';
+    var encrypted = aes256.encrypt(key, password);
+
+    con.query("SELECT name, password FROM users", 
+        function(err, result){
+        if (err){
+            res.redirect('/');
+        }else{
+            console.log('Conexion correcta!');
+            res.render('index', { title: 'Hey', message: 'Hello there!' })
+        }
+    });
 })
 
 server.lastPlayderID = 0;

@@ -1,8 +1,37 @@
 extends layout
 
 block content
+ .tab
+   button.tablinks(onclick="openOpcions(event, 'Amigos')") Amigos
+   button.tablinks(onclick="openOpcions(event, 'Ranking')") Ranking
+   button.tablinks(onclick="openOpcions(event, 'Sonido')") Sonido
+   button.tablinks(onclick="openOpcions(event, 'Logout')") Logout
 
- button#start(class='btn btn-success' onclick="Main.startGame()") Start Game
+ #Amigos.tabcontent
+   span.topright(onclick="this.parentElement.style.display='none'") x
+   h3 Amigos
+   p Amigos conectados.
+
+ #Ranking.tabcontent
+   span.topright(onclick="this.parentElement.style.display='none'") x
+   h3 Mundial
+   p Estos son los mejores del juego ➤ 
+      button(class='btn btn-default' onclick="Game.ranking()") Ranking
+
+ #Sonido.tabcontent
+   span.topright(onclick="this.parentElement.style.display='none'") x
+   h3 Sonido
+   p 
+    | Si quieres activar/desactivar el sonido solo tienes que clicar aqui ➤  
+    img#imagen(src='/images/sondio_ac.png' onclick="javascript:document.getElementById('imagenes').play();")  
+    img#imagen2(src='/images/sondio_de.svg' onclick="javascript:document.getElementById('imagenes').pause();")
+    
+ #Logout.tabcontent
+   span.topright(onclick="this.parentElement.style.display='none'") x
+   h3 Gracias por visitarnos!
+   a(href="/") Salir
+ 
+  button#start(class='btn btn-success' onclick="Main.startGame()") Start Game
 
  #formModal.modal
   .modal-dialog
@@ -13,13 +42,32 @@ block content
         p.formModal
       .modal-footer
 
-
  #contenedor
    #Horas.reloj 00
    #Minutos.reloj :00
    #Segundos.reloj :00
    #Centesimas.reloj :00
+
    //input#inicio.boton(type='button', value='Start ►', onclick='inicio();')
    //input#parar.boton(type='button', value='Stop ∎', onclick='parar();', disabled='')
    //input#continuar.boton(type='button', value='Resume ↺', onclick='inicio();', disabled='')
    //input#reinicio.boton(type='button', value='Reset ↻', onclick='reinicio();', disabled='')
+
+ script.
+    function openOpcions(event, opcionsName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(opcionsName).style.display = "block";
+    evt.currentTarget.className += " active";
+    }
+    document.getElementById("defaultOpen").click();
+
+ audio#imagenes(autoplay='true', src='/sonido/starwras-guerra-de-las-galaxias-peliculas-.mp3' loop)
+
