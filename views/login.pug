@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  
+    div(class="row text-center")
+     div.col-md-4
+     div#inicio
+      form.form-signin(method='post', action='/entrar')
+
+        h3.form-signin-heading Bienvenidos al inicio de session
+        |
+        - if(message){
+        p(style='color:red') #{message}
+        - }
+        input.form-control(type='name', name='name', placeholder='Username' required)
+        |
+        input.form-control(type='password', name='password', placeholder='Password' required)
+        label.checkbox
+        |
+        input#Login(type='submit' class='btn btn-lg btn btn-success btn btn-block' value='Login')
+        form.
+        form(method='get', action="/registro")
+         button#Login_Register.btn.btn-lg.btn-primary.btn-block(type='submit' href="/registro.pug") Register

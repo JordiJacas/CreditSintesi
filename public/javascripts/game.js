@@ -3,11 +3,12 @@ var cursors;
 var velocity = 2
 var arrayObstaclesMap = [];
 var arrayPlayerMap = [];
-
-var game = new Phaser.Game(800, 600, Phaser.AUTO, document.getElementById('game'));
+var game;
 
 Game.iniciar = function(){
 
+    $('#start').hide();
+    game = new Phaser.Game(800, 600, Phaser.AUTO, document.getElementById('game'));
     game.state.add('Game', Game);
     game.state.start('Game');
 }
