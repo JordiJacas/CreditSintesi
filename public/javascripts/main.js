@@ -12,7 +12,8 @@ Main.endGame = function(title, message){
     Client.destroyAllPlayers();
     Main.game.destroy();
     delete Main.game;
-    Main.showModal(title, Main.renderForm(message));
+    Main.showModal(title, Main.renderForm(message,time()));
+    reinicio();
 }
 
 Main.showModal = function(title,message)
@@ -22,11 +23,11 @@ Main.showModal = function(title,message)
     $("#formModal").modal({show:true, backdrop: 'static', keyboard: true });
 }
 
-Main.renderForm = function(message){
+Main.renderForm = function(message,time){
 
     var html = "";
     html += '<div class="form-group" id="formLogin">';
-    html += '<p class="text-center text-capitalize font-weight-light">'+ message +'</p>';
+    html += '<p class="text-center text-capitalize font-weight-light">'+ message + '<br>'+ time +'</p>';
     html += '</div>';
     html += '<button type="submit" class="btn btn-primary btn-large" id="loginBtn" onclick=Main.hideModal()>Menu</button>';
     return html;

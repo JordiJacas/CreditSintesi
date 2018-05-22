@@ -15,8 +15,8 @@ function inicio () {
 function parar () {
 	clearInterval(control);
 
-	document.getElementById("parar").disabled = true;
-	document.getElementById("continuar").disabled = false;
+	//document.getElementById("parar").disabled = true;
+	//document.getElementById("continuar").disabled = false;
 }
 
 function reinicio () {
@@ -68,4 +68,12 @@ function cronometro () {
 		if (horas < 10) { horas = "0"+horas }
 		Horas.innerHTML = horas;
 	}
+}
+
+function time(){
+	
+	var time = horas + ":" + minutos + ":" + segundos + ":" + centesimas;
+	time = "Your time: " + time;
+
+	return time;
 }

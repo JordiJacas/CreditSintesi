@@ -18,7 +18,13 @@ Client.socket.on('winresult', function(id){
 Client.socket.on('startObstacles', function(data){
     console.log("Length-Array:")
     console.log(data);
-    if(data == 2){setTimeout(Client.askNewObstacle, 1000)}
+    if(data == 2){setTimeout(Client.askNewObstacle, 1000);}
+})
+
+Client.socket.on('startCrono', function(boleanStart){
+    console.log(boleanStart);
+    if(boleanStart){inicio();}
+    else if(!boleanStart){parar();}
 })
 
 // Funciones para pasar de cliente/servidor o servidor/cliente para jugadores
@@ -101,6 +107,7 @@ Client.socket.on('newobstacle',function(data){
 });
 
 Client.socket.on('allobstacles',function(data){
+
     for(var i = 0; i < data.length; i++){
         Game.addNewObstacle(data[i].id,data[i].x,data[i].y,data[i].type);
         Game.moveObstacle(data[i].id, data[i].velocityX, data[i].velocityY, data[i].directionX, data[i].directionY);
