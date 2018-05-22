@@ -30,7 +30,7 @@ con.connect(function(err) {
     console.log("Table created");
   });
 
-  var sql = "CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, token TEXT)";
+  var sql = "CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, token TEXT, status INT NOT NULL DEFAULT 0)";
   con.query(sql, function (err, result) {
     if (err) throw err;
     console.log("Table created");

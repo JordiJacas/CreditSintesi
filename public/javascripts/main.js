@@ -12,7 +12,7 @@ Main.endGame = function(title, message){
     Client.destroyAllPlayers();
     Main.game.destroy();
     delete Main.game;
-    Main.showModal(title, Main.renderForm(message));
+    Main.showModal(title, Main.renderResult(message));
 }
 
 Main.showModal = function(title,message)
@@ -22,7 +22,7 @@ Main.showModal = function(title,message)
     $("#formModal").modal({show:true, backdrop: 'static', keyboard: true });
 }
 
-Main.renderForm = function(message){
+Main.renderResult = function(message){
 
     var html = "";
     html += '<div class="form-group" id="formLogin">';
@@ -41,4 +41,8 @@ Main.hideModal = function(){
     
     $("#formModal").modal("hide");
     $('#start').show(); 
+}
+
+Main.testForm = function(test){
+       
 }

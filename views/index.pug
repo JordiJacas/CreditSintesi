@@ -11,12 +11,12 @@ block content
    span.topright(onclick="this.parentElement.style.display='none'") x
    h3 Amigos
    p Amigos conectados.
+    ul#friends
 
  #Ranking.tabcontent
    span.topright(onclick="this.parentElement.style.display='none'") x
    h3 Mundial
    p Estos son los mejores del juego ➤ 
-      button(class='btn btn-default' onclick="Game.ranking()") Ranking
 
  #Sonido.tabcontent
    span.topright(onclick="this.parentElement.style.display='none'") x
@@ -31,7 +31,7 @@ block content
    h3 Gracias por visitarnos!
    a(href="/") Salir
  
-  button#start(class='btn btn-success' onclick="Main.startGame()") Start Game
+ button#start(class='btn btn-success' onclick="Main.startGame()") Start Game
 
  #formModal.modal
   .modal-dialog

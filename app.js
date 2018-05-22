@@ -4,8 +4,6 @@ var server = require('http').Server(app);
 var io = require('socket.io').listen(server);
 var mysql = require('mysql');
 
-var aes256 = require('aes256');
-
 ///
 const bodyParser = require('body-parser')
 
@@ -33,20 +31,15 @@ app.get('/registro', function (req, res) {
 
 app.post('/signup', function (req, res) {
 
-    var key = 'my passphrase';
-    var plaintext = req.body.password;
-    var encrypted = aes256.encrypt(key, plaintext);
-
     con.query("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", 
-        [req.body.name, req.body.email, encrypted], function(err, result) {
+        [req.body.name, req.body.email, req.body.password], function(err, result) {
             if (err){
                 throw err;
             }
             else{
                 res.redirect('/');
                 console.log('Se ha insertado el usuario correctamente!');
-            } 
-            con.end();  
+            }  
         });
 })
 
@@ -55,19 +48,31 @@ app.post('/entrar', function (req, res) {
     var username = req.body.name;
     var password = req.body.password;
 
-    var key = 'my passphrase';
-    var encrypted = aes256.encrypt(key, password);
-
-    con.query("SELECT name, password FROM users", 
+    con.query("SELECT name, password FROM users WHERE name='"+username+"'AND password='"+password+"';", 
         function(err, result){
-        if (err){
+        if(result.length == 0){
             res.redirect('/');
-        }else{
+        }else if(result.length == 1){
             console.log('Conexion correcta!');
+            con.query("UPDATE users SET status = '1' WHERE status = 0 AND name='"+username+"'AND password='"+password+"';");
             res.render('index', { title: 'Hey', message: 'Hello there!' })
+
         }
     });
 })
+
+app.get('/ranking', function (req, res){
+
+    con.query('SELECT * FROM users', function(error,filas){
+        if (error) {            
+            console.log('error en el listado');
+            return;
+        }
+        res.render('index',{name:filas});
+    });
+})
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 server.lastPlayderID = 0;
 server.lastObstacleID = 0;
@@ -168,6 +173,7 @@ io.on('connection', function(socket){
 server.listen(3000, function(){
   console.log('listening on *:3000');
 });
+
 
 function getAllPlayers(){
     var players = [];
