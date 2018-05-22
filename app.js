@@ -22,7 +22,7 @@ app.set('view engine', 'pug');
 app.use(express.static('public'));
 
 app.get('/', function (req, res) {
-  res.render('login', { title: 'Login', message: 'Inicia la sessio' })
+  res.render('index', { title: 'Login', message: 'Inicia la sessio' })
 })
 
 app.get('/registro', function (req, res) {
@@ -81,7 +81,6 @@ io.on('connection', function(socket){
   
   console.log("--------------------------------------------------");
   console.log('a user connected');
-  console.log(server.lastPlayderID);
   console.log("--------------------------------------------------");
 
 	socket.on('newplayer',function(){
@@ -103,6 +102,7 @@ io.on('connection', function(socket){
         socket.broadcast.emit('newplayer',getAllPlayers(), socket.player);
 
         socket.emit('startObstacles', getAllPlayers().length);
+        
 
         socket.on('click',function(data){
             io.emit('moveplayer',socket.player, data);
@@ -154,6 +154,9 @@ io.on('connection', function(socket){
         socket.emit('allobstacles',getAllObstacles());
         socket.broadcast.emit('newobstacle',socket.obstacle);
 
+        socket.emit('startCrono', true);
+        socket.broadcast.emit('startCrono', true);
+
         socket.on('removeobstacle', function(){
             io.emit('removeallobstacles', getAllObstacles());
             socket.emit('removeallobstacles', getAllObstacles());
@@ -161,6 +164,9 @@ io.on('connection', function(socket){
     })
 
     socket.on('win', function(){
+        socket.emit('startCrono', false);
+        socket.broadcast.emit('startCrono', false);
+
         socket.emit('winresult', socket.player.id);
     })
 

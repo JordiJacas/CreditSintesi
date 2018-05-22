@@ -47,10 +47,6 @@ block content
    #Minutos.reloj :00
    #Segundos.reloj :00
    #Centesimas.reloj :00
-   input#inicio.boton(type='button', value='Start ►', onclick='inicio();')
-   input#parar.boton(type='button', value='Stop ∎', onclick='parar();', disabled='')
-   input#continuar.boton(type='button', value='Resume ↺', onclick='inicio();', disabled='')
-   input#reinicio.boton(type='button', value='Reset ↻', onclick='reinicio();', disabled='')
 
  script.
     function openOpcions(event, opcionsName) {
@@ -69,3 +65,4 @@ block content
     document.getElementById("defaultOpen").click();
 
  audio#imagenes(autoplay='true', src='/sonido/starwras-guerra-de-las-galaxias-peliculas-.mp3' loop)
+
