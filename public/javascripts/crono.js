@@ -5,18 +5,10 @@ var horas = 0;
 
 function inicio () {
 	control = setInterval(cronometro,10);
-
-	//document.getElementById("inicio").disabled = true;
-	//document.getElementById("parar").disabled = false;
-	//document.getElementById("continuar").disabled = true;
-	//document.getElementById("reinicio").disabled = false;
 }
 
 function parar () {
 	clearInterval(control);
-
-	//document.getElementById("parar").disabled = true;
-	//document.getElementById("continuar").disabled = false;
 }
 
 function reinicio () {
@@ -31,11 +23,6 @@ function reinicio () {
 	Segundos.innerHTML = ":00";
 	Minutos.innerHTML = ":00";
 	Horas.innerHTML = "00";
-
-	//document.getElementById("inicio").disabled = false;
-	//document.getElementById("parar").disabled = true;
-	//document.getElementById("continuar").disabled = true;
-	//document.getElementById("reinicio").disabled = true;
 }
 
 function cronometro () {
@@ -71,7 +58,7 @@ function cronometro () {
 }
 
 function time(){
-	
+
 	var time = horas + ":" + minutos + ":" + segundos + ":" + centesimas;
 	time = "Your time: " + time;
 

@@ -165,7 +165,7 @@ io.on('connection', function(socket){
     socket.on('win', function(){
         socket.emit('startCrono', false);
         socket.broadcast.emit('startCrono', false);
-        
+
         socket.emit('winresult', socket.player.id);
     })
 
