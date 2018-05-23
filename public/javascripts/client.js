@@ -230,7 +230,7 @@ Client.removeObstacle = function(){
 */
 Client.socket.on('newobstacle',function(data){
     Game.addNewObstacle(data.id,data.x,data.y, data.type);
-    Game.moveObstacle(data.id, data.velocityX, data.velocityY, data.directionX, data.directionY);
+    Game.moveObstacle(data.id, data.velocityX, data.velocityY);
 });
 
 /*
