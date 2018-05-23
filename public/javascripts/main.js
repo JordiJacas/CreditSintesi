@@ -19,7 +19,7 @@ Main.game;
 Main.startGame = function(){
 
     //Crear zona de juegon y comenzar partida.
-	Main.game = new Phaser.Game(800, 600, Phaser.AUTO);
+	Main.game = new Phaser.Game(800, 500, Phaser.AUTO);
 	Main.game.state.add('Game', Game);
 	Main.game.state.start('Game');
 	
@@ -44,7 +44,7 @@ Main.endGame = function(title, message){
     delete Main.game;
 
     //Mostrar resultados.
-    Main.showModal(title, Main.renderResult(message,"Your time: "+Crono.time()));
+    Main.showModal(title, Main.renderResult(message,Crono.time()));
 
     //Reiniciar cronometro.
     Crono.restart();
@@ -74,7 +74,7 @@ Main.renderResult = function(message){
 
     var html = "";
     html += '<div class="form-group" id="formLogin">';
-    html += '<p class="text-center text-capitalize font-weight-light">'+ message + '<br>'+ time +'</p>';
+    html += '<p class="text-center text-capitalize font-weight-light">'+ message + '<br>'+ "Your time: " + time.timeC +'</p>';
     html += '</div>';
     html += '<button type="submit" class="btn btn-primary btn-large" id="loginBtn" onclick=Main.hideModal()>Menu</button>';
     return html;

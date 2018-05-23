@@ -1,5 +1,6 @@
 extends layout
 
+
 block content
  .tab
    button.tablinks(onclick="openOpcions(event, 'Amigos')") Amigos
@@ -10,13 +11,17 @@ block content
  #Amigos.tabcontent
    span.topright(onclick="this.parentElement.style.display='none'") x
    h3 Amigos
-   p Amigos conectados.
-    ul#friends
+   ul
+    each val in values
+     li= val
 
  #Ranking.tabcontent
    span.topright(onclick="this.parentElement.style.display='none'") x
    h3 Mundial
-   p Estos son los mejores del juego ➤ 
+   p Estos son el TOP 3 ➤ 
+    ul
+     each val in ranking
+      li= val
 
  #Sonido.tabcontent
    span.topright(onclick="this.parentElement.style.display='none'") x

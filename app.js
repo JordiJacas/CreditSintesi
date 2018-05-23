@@ -4,19 +4,21 @@ var server = require('http').Server(app);
 var io = require('socket.io').listen(server);
 var mysql = require('mysql');
 
-///
-const bodyParser = require('body-parser')
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-///
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
+
+//Intentar singletoon
+////////////////////////////////////////////////////////////////////////
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "mysql1234",
+  password: "Contrasenya9",
   database: "NaiBoy_bbdd"
 });
+////////////////////////////////////////////////////////////////////////
 
 app.set('view engine', 'pug');
 app.use(express.static('public'));
@@ -31,16 +33,16 @@ app.get('/registro', function (req, res) {
 
 app.post('/signup', function (req, res) {
 
-    con.query("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", 
-        [req.body.name, req.body.email, req.body.password], function(err, result) {
-            if (err){
-                throw err;
-            }
-            else{
-                res.redirect('/');
-                console.log('Se ha insertado el usuario correctamente!');
-            }  
-        });
+    con.query("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", [req.body.name, req.body.email, req.body.password],
+     function(err, result){
+        if (err){
+            throw err;
+        }
+        else{
+            res.redirect('/');
+            console.log('Se ha insertado el usuario correctamente!');
+        }  
+    });
 })
 
 app.post('/entrar', function (req, res) {
@@ -53,24 +55,35 @@ app.post('/entrar', function (req, res) {
         if(result.length == 0){
             res.redirect('/');
         }else if(result.length == 1){
+
             console.log('Conexion correcta!');
             con.query("UPDATE users SET status = '1' WHERE status = 0 AND name='"+username+"'AND password='"+password+"';");
-            res.render('index', { title: 'Hey', message: 'Hello there!' })
 
+            con.query("SELECT * FROM users WHERE status = 1", function(err, result){
+                var array = [];
+
+                if(result.length == 0){
+                    array.push('No hay usuarios conectados');
+                }else if(result.length >= 1){
+                    for(var i=0; i < result.length; i++){array.push(result[i].name);}
+                }
+
+                con.query("SELECT u.name, r.tiempo_partida FROM ranking r, users u WHERE u.id = r.id_user ORDER BY r.tiempo_partida ASC LIMIT 3;",
+                 function(err, ranking){
+                    var rankingArray = [];
+
+                    for(var i=0; i < ranking.length; i++){
+                        var textRanking = ranking[i].name + "-----" + ranking[i].tiempo_partida;
+                        rankingArray.push(textRanking);
+                    }
+
+                    res.render('index', { title: 'Hey', message: 'Hello there!!', values: array, ranking: rankingArray});
+                 });                
+            });
         }
     });
 })
 
-app.get('/ranking', function (req, res){
-
-    con.query('SELECT * FROM users', function(error,filas){
-        if (error) {            
-            console.log('error en el listado');
-            return;
-        }
-        res.render('index',{name:filas});
-    });
-})
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 

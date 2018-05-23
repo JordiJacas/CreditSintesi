@@ -99,5 +99,7 @@ Crono.time = function(){
 	Crono.time = Crono.minutos + ":" + Crono.segundos + ":" + Crono.centesimas;
 	Crono.time = Crono.time;
 
-	return time;
+	Crono.timeC = (Crono.minutos*60) + (Crono.segundos*90) + Crono.centesimas;
+
+	return {time: time, timeC: timeC};
 }
