@@ -43,10 +43,12 @@ block content
       .modal-footer
 
  #contenedor
-   #Horas.reloj 00
-   #Minutos.reloj :00
+   #Minutos.reloj 00
    #Segundos.reloj :00
    #Centesimas.reloj :00
+   
+   //<input type="button" class="boton" id="inicio" value="Start &#9658;" onclick="Crono.start();">
+   //<input type="button" class="boton" id="inicio" value="Start &#9658;" onclick="Crono.stop();">
 
  script.
     function openOpcions(event, opcionsName) {

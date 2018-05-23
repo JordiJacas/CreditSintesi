@@ -1,66 +1,103 @@
-var centesimas = 0;
-var segundos = 0;
-var minutos = 0;
-var horas = 0;
+/*
+** Script.js
+** Creador: Jordi Jacas
+** Archivo donde se alojan funciones de crontrol del cronometro.
 
-function inicio () {
-	control = setInterval(cronometro,10);
+/*
+** Variables Globales del archivo crono.js;
+*/
+var Crono = {};
+Crono.centesimas = 0;
+Crono.segundos = 0;
+Crono.minutos = 0;
+
+/*
+** Funcion que se ejecuta al llamarla
+** Descripcion: Pone en funcionamiento el cronometro.
+** Entrada: NULL
+** Salida: NULL
+*/
+Crono.start = function() {
+	Crono.control = setInterval(Crono.cronometro,10);
 }
 
-function parar () {
-	clearInterval(control);
+/*
+** Funcion que se ejecuta al llamarla
+** Descripcion: Detiene el cronometro.
+** Entrada: NULL
+** Salida: NULL
+*/
+Crono.stop = function() {
+	clearInterval(Crono.control);
 }
 
-function reinicio () {
-	clearInterval(control);
+/*
+** Funcion que se ejecuta al llamarla
+** Descripcion: Restaura las variables al valor inicial y detine el cronometro.
+** Entrada: NULL
+** Salida: NULL
+*/
+Crono.restart = function() {
+	clearInterval(Crono.control);
 
-	centesimas = 0;
-	segundos = 0;
-	minutos = 0;
-	horas = 0;
+	Crono.centesimas = 0;
+	Crono.segundos = 0;
+	Crono.minutos = 0;
 
-	Centesimas.innerHTML = ":00";
+	Centesimas.innerHTML = "00";
 	Segundos.innerHTML = ":00";
 	Minutos.innerHTML = ":00";
-	Horas.innerHTML = "00";
 }
 
-function cronometro () {
-	if (centesimas < 99) {
-		centesimas++;
-		if (centesimas < 10) { centesimas = "0"+centesimas }
-		Centesimas.innerHTML = ":"+centesimas;
+/*
+** Funcion que se ejecuta al llamarla
+** Descripcion: Logica del cronometro.
+** Entrada: NULL
+** Salida: NULL
+*/
+Crono.cronometro = function() {
+	
+	//Suma las centesimas y las muestra por pantalla.
+	if(Crono.centesimas < 99) {
+		Crono.centesimas++;
+		if(Crono.centesimas < 10) { Crono.centesimas= "0" + Crono.centesimas }
+		Centesimas.innerHTML= ":" + Crono.centesimas;
 	}
-	if (centesimas == 99) {
-		centesimas = -1;
+	
+	//Al llegar al maximo de centesimas restaura el valor.
+	if(Crono.centesimas == 99) {Crono.centesimas = -1;}
+	
+	//Suma los segundos y los muestra por pantalla.
+	if (Crono.centesimas == 0) {
+		Crono.segundos ++;
+		if (Crono.segundos < 10) {Crono.segundos = "0"+Crono.segundos}
+		Segundos.innerHTML = ":"+Crono.segundos;
 	}
-	if (centesimas == 0) {
-		segundos ++;
-		if (segundos < 10) { segundos = "0"+segundos }
-		Segundos.innerHTML = ":"+segundos;
+	
+	//Al llegar al maximo de segundos restaura el valor.
+	if(Crono.segundos == 59){Crono.segundos = -1;}
+	
+	//Suma los minutos y los muestra por pantalla.
+	if((Crono.centesimas == 0) && (Crono.segundos == 0)){
+		Crono.minutos++;
+		if(Crono.minutos < 10){Crono.minutos = "0"+Crono.minutos}
+		Minutos.innerHTML = Crono.minutos;
 	}
-	if (segundos == 59) {
-		segundos = -1;
-	}
-	if ( (centesimas == 0)&&(segundos == 0) ) {
-		minutos++;
-		if (minutos < 10) { minutos = "0"+minutos }
-		Minutos.innerHTML = ":"+minutos;
-	}
-	if (minutos == 59) {
-		minutos = -1;
-	}
-	if ( (centesimas == 0)&&(segundos == 0)&&(minutos == 0) ) {
-		horas ++;
-		if (horas < 10) { horas = "0"+horas }
-		Horas.innerHTML = horas;
-	}
+	
+	//Al llegar al maximo de minutos restaura el valor.
+	if(Crono.minutos == 59){Crono.minutos = -1;}
 }
 
-function time(){
+/*
+** Funcion que se ejecuta al llamarla
+** Descripcion: Devuelve el tiempo donde el cronometro se ha detenido.
+** Entrada: NULL
+** Salida: string time
+*/
+Crono.time = function(){
 
-	var time = horas + ":" + minutos + ":" + segundos + ":" + centesimas;
-	time = "Your time: " + time;
+	Crono.time = Crono.minutos + ":" + Crono.segundos + ":" + Crono.centesimas;
+	Crono.time = Crono.time;
 
 	return time;
 }
