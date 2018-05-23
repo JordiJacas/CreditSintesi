@@ -24,7 +24,7 @@ app.set('view engine', 'pug');
 app.use(express.static('public'));
 
 app.get('/', function (req, res) {
-  res.render('index', { title: 'Login', message: 'Inicia la sessio' })
+  res.render('login', { title: 'Login', message: 'Inicia la sessio' })
 })
 
 app.get('/registro', function (req, res) {

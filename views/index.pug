@@ -27,9 +27,8 @@ block content
    span.topright(onclick="this.parentElement.style.display='none'") x
    h3 Sonido
    p 
-    | Si quieres activar/desactivar el sonido solo tienes que clicar aqui ➤  
-    img#imagen(src='/images/sondio_ac.png' onclick="javascript:document.getElementById('imagenes').play();")  
-    img#imagen2(src='/images/sondio_de.svg' onclick="javascript:document.getElementById('imagenes').pause();")
+    | Si quieres activar/desactivar el sonido solo tienes que clicar aqui ➤   
+    img#imagen2(src='/images/sondio_de.svg' name='prueba' onmousedown="cambia_imagen();" onclick="sonido()")
     
  #Logout.tabcontent
    span.topright(onclick="this.parentElement.style.display='none'") x
@@ -71,5 +70,43 @@ block content
     }
     document.getElementById("defaultOpen").click();
 
- audio#imagenes(autoplay='true', src='/sonido/starwras-guerra-de-las-galaxias-peliculas-.mp3' loop)
+ script.
+  mi_imagen1=new Image
+  mi_imagen1.src="/images/sondio_ac.png"
 
+  mi_imagen2=new Image
+  mi_imagen2.src="/images/sondio_de.svg"
+
+  var i=1;
+  function cambia_imagen() {
+  if (i == 1)
+  {
+    document.images['prueba'].src=mi_imagen1.src;
+    i=2;
+  }
+  else
+  {
+    document.images['prueba'].src=mi_imagen2.src;
+    i=1;
+  }
+  }
+
+ script.
+
+  var i= true;
+  function sonido() {
+    console.log("boolean")
+    console.log(i)
+    if(i)
+    {
+      document.getElementById('imagenes').pause();
+      i= false;
+    }
+    else if(!i)
+    {
+      document.getElementById('imagenes').play();
+      i= true;
+    }
+  }
+
+ audio#imagenes(autoplay='true', src='/sonido/starwras-guerra-de-las-galaxias-peliculas-.mp3' loop)
