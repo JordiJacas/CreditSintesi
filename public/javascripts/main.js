@@ -10,10 +10,9 @@
 var Main = {};
 Main.game;
 
-
 /*
 ** Funcion que se ejecuta al clicar el boton de startGame
-** Descripcion: Crea la zona de juego, empieza el juego y esconde el boton de startGame.
+** Descripcion: Crea la zona de juego, empieza el juego y esconde o muestra elementos.
 ** Entrada: NULL
 ** Salida: NULL
 */
@@ -23,9 +22,10 @@ Main.startGame = function(){
 	Main.game = new Phaser.Game(800, 600, Phaser.AUTO);
 	Main.game.state.add('Game', Game);
 	Main.game.state.start('Game');
-
-    //Ocultar boton de startGame.
+	
+    //Ocultar boton de startGame y  mostrar cronometro
     $('#start').hide();
+	$('#contenedor').show();
 }
 
 /*
@@ -44,10 +44,10 @@ Main.endGame = function(title, message){
     delete Main.game;
 
     //Mostrar resultados.
-    Main.showModal(title, Main.renderResult(message,time()));
+    Main.showModal(title, Main.renderResult(message,"Your time: "+Crono.time()));
 
     //Reiniciar cronometro.
-    reinicio();
+    Crono.restart();
 }
 
 
@@ -93,7 +93,9 @@ Main.hideModal = function(){
     location.reload(true);
     //-------------------------
     
-    //Ocultar modal y mostrar bonton de jugar.
+    //Ocultar modal, cronometo y mostrar bonton de jugar.
     $("#formModal").modal("hide");
+	$('#contenedor').hide();
     $('#start').show(); 
+	
 }

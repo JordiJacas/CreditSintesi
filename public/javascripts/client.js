@@ -56,8 +56,8 @@ Client.socket.on('startObstacles', function(data){
 */
 Client.socket.on('startCrono', function(boleanStart){
     console.log(boleanStart);
-    if(boleanStart){inicio();}
-    else if(!boleanStart){parar();}
+    if(boleanStart){Crono.start();}
+    else if(!boleanStart){Crono.stop();}
 })
 
 // Funciones para pasar de cliente/servidor o servidor/cliente para jugadores
@@ -230,7 +230,7 @@ Client.removeObstacle = function(){
 */
 Client.socket.on('newobstacle',function(data){
     Game.addNewObstacle(data.id,data.x,data.y, data.type);
-    Game.moveObstacle(data.id, data.velocityX, data.velocityY, data.directionX, data.directionY);
+    Game.moveObstacle(data.id, data.velocityX, data.velocityY);
 });
 
 /*
