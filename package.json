@@ -2,7 +2,7 @@
   "name": "Nayboy",
   "version": "1.0.0",
   "description": "Credit de Sintesi",
-  "main": "app.js",
+  "start": "node app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,7 +12,9 @@
     "aes256": "^1.0.3",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
+    "forever": "^0.15.3",
     "mysql": "^2.15.0",
+    "pg": "^7.4.3",
     "pug": "^2.0.3",
     "socket.io": "^2.1.0"
   }

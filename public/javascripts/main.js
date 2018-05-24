@@ -46,6 +46,9 @@ Main.endGame = function(title, message){
     //Mostrar resultados.
     Main.showModal(title, Main.renderResult(message,Crono.time()));
 
+    //Ocultar cronometro.
+    $('#contenedor').hide();
+
     //Reiniciar cronometro.
     Crono.restart();
 }
@@ -70,11 +73,11 @@ Main.showModal = function(title,message)
 ** Entrada: NULL
 ** Salida: NULL
 */
-Main.renderResult = function(message){
+Main.renderResult = function(message, time){
 
     var html = "";
     html += '<div class="form-group" id="formLogin">';
-    html += '<p class="text-center text-capitalize font-weight-light">'+ message + '<br>'+ "Your time: " + time.timeC +'</p>';
+    html += '<p class="text-center text-capitalize font-weight-light">'+ message + '<br>'+ "Your time: " + time.time +'</p>';
     html += '</div>';
     html += '<button type="submit" class="btn btn-primary btn-large" id="loginBtn" onclick=Main.hideModal()>Menu</button>';
     return html;
@@ -93,9 +96,8 @@ Main.hideModal = function(){
     location.reload(true);
     //-------------------------
     
-    //Ocultar modal, cronometo y mostrar bonton de jugar.
+    //Ocultar modal y mostrar bonton de jugar.
     $("#formModal").modal("hide");
-	$('#contenedor').hide();
     $('#start').show(); 
 	
 }

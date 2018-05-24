@@ -119,6 +119,7 @@ Game.detecteKey = function(){
 */
 Game.bouncePlayer = function(){
     for(var id = 0; id < Game.arrayPlayerMap.length; id++){
+        console.log(id);
         for( var id2 = 0; id2 < Game.arrayObstaclesMap.length; id2++){
             Main.game.physics.arcade.collide(Game.playerMap[id], Game.obstacleMap[id2]);
         }
@@ -247,7 +248,7 @@ Game.moveObstacle = function(id, velocityX, velocityY){
     Game.obstacleMap[id].body.collideWorldBounds = true;
 	
 	//Velocidad de los obstaculos
-    //Game.obstacleMap[id].body.velocity.setTo(velocityX*100, velocityY*100);
+    Game.obstacleMap[id].body.velocity.setTo(velocityX*100, velocityY*100);
 	
 	//Rebote cuando llega al extremo del mapa
     Game.obstacleMap[id].body.bounce.set(1);
@@ -275,6 +276,7 @@ Game.hitSpriteObstacle = function(obstacle1, obstacle2){
 */
 Game.bounceObstacle = function(){
     for(var id = 0; id < Game.arrayObstaclesMap.length; id++){
+        console.log(id);
         for( var id2 = 0; id2 < Game.arrayObstaclesMap.length; id2++){
             if(Game.arrayObstaclesMap[id] != Game.arrayObstaclesMap[id2]){Main.game.physics.arcade.collide(Game.obstacleMap[id], Game.obstacleMap[id2]);}
         }

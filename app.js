@@ -38,6 +38,11 @@ app.get('/registro', function (req, res) {
    res.render('registro', { title: 'Registro', message: 'Hello there!' })
 })
 
+app.get('/logout', function (req, res) {
+   res.render('registro', { title: 'Registro', message: 'Hello there!' })
+   con.query("UPDATE users SET status = '0' WHERE status = 1 AND name='"+username+"'AND password='"+password+"';");
+})
+
 app.post('/signup', function (req, res) {
 
     con.query("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", [req.body.name, req.body.email, req.body.password],
