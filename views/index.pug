@@ -11,15 +11,15 @@ block content
  #Amigos.tabcontent
    span.topright(onclick="this.parentElement.style.display='none'") x
    h3 Amigos
-   ul
-    each val in values
-     li= val
+   ul#conectados
+     each val in values
+      li= val
 
  #Ranking.tabcontent
    span.topright(onclick="this.parentElement.style.display='none'") x
    h3 Mundial
    p Estos son el TOP 3 ➤ 
-    ul
+    ul#conectados
      each val in ranking
       li= val
 
@@ -28,14 +28,30 @@ block content
    h3 Sonido
    p 
     | Si quieres activar/desactivar el sonido solo tienes que clicar aqui ➤   
-    img#imagen2(src='/images/sondio_de.svg' name='prueba' onmousedown="cambia_imagen();" onclick="sonido()")
+    img#imagen2(src='/images/sondio_de.png' name='prueba' onmousedown="cambia_imagen()")
     
  #Logout.tabcontent
    span.topright(onclick="this.parentElement.style.display='none'") x
    h3 Gracias por visitarnos!
-   a(href="/") Salir
+   form(method='get', action="/logout")
+     input(type='submit' class='btn btn-primary' value='Salir')
  
  button#start(class='btn btn-success' onclick="Main.startGame()") Start Game
+
+
+ div#info
+   p
+     b INSTRUCCIONES:
+     br
+     | 1. Hay que evitar que te den los meteoritos
+     br
+     | 2. Se mas inteligente que tu rival
+     br
+     | 3. Movimiento del pj:
+     li(style="text-align: center;") Arriba -> ⬆
+     li(style="text-align: center;") Abajo -> ⬇
+     li(style="text-align: center;") Izquierda -> ⬅
+     li(style="text-align: center;") Derecha -> ➡
 
  #formModal.modal
   .modal-dialog
@@ -75,38 +91,22 @@ block content
   mi_imagen1.src="/images/sondio_ac.png"
 
   mi_imagen2=new Image
-  mi_imagen2.src="/images/sondio_de.svg"
+  mi_imagen2.src="/images/sondio_de.png"
 
   var i=1;
   function cambia_imagen() {
   if (i == 1)
   {
     document.images['prueba'].src=mi_imagen1.src;
+    document.getElementById('imagenes').pause();
     i=2;
   }
   else
   {
     document.images['prueba'].src=mi_imagen2.src;
+    document.getElementById('imagenes').play();
     i=1;
   }
-  }
-
- script.
-
-  var i= true;
-  function sonido() {
-    console.log("boolean")
-    console.log(i)
-    if(i)
-    {
-      document.getElementById('imagenes').pause();
-      i= false;
-    }
-    else if(!i)
-    {
-      document.getElementById('imagenes').play();
-      i= true;
-    }
   }
 
  audio#imagenes(autoplay='true', src='/sonido/starwras-guerra-de-las-galaxias-peliculas-.mp3' loop)

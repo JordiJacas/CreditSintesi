@@ -6,9 +6,15 @@ canvas{
     margin: auto;
 }
 
+body{
+    background-image: url(../images/fondo.gif);
+    background-size: 100%;
+}
+
 #inicio{
     position: relative;
     padding-top: 10%;
+    
 }
 
 #start{
@@ -20,6 +26,22 @@ canvas{
     margin-top: -75px;
     margin-left: -75px;
     font-size: 30px;
+}
+
+#conectados{
+    padding-left: 20px;
+}
+
+#info{
+    position: absolute;
+    margin: auto;
+    text-align: left;
+    left: 35%;
+    top: 58%;
+    padding: 10px 10px 5px 10px;
+    font-size: 18px;
+    background-color: white;
+    border: 2px blue solid;
 }
 
 .panel-body{
@@ -62,6 +84,7 @@ canvas{
     padding: 6px 12px;
     -webkit-animation: fadeEffect 1s;
     animation: fadeEffect 1s;
+    color: white;
 }
 
 /* Fade in tabs */
@@ -84,8 +107,14 @@ canvas{
 
 .topright:hover {color: red;}
 
-#imagen, #imagen2{
-    width: 20px;
-    height: 20px;
+#imagen{
+    width: 30px;
+    height: 30px;
+    padding: 2px 2px 2px 2px;
+}
+
+#imagen2{
+    width: 40px;
+    height: 30px;
     padding: 2px 2px 2px 2px;
 }
