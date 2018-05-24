@@ -3,31 +3,9 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io').listen(server);
 var mysql = require('mysql');
+
+
 const bodyParser = require('body-parser');
-
-const { Pool } = require('pg');
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true
-});
-
-
-
-app.get('/db', async (req, res) => {
-  try {
-    const client = await pool.connect()
-    const result = await client.query('SELECT * FROM test_table');
-    res.render('pages/db', result);
-    client.release();
-  } catch (err) {
-    console.error(err);
-    res.send("Error " + err);
-  }
-});
-
-
-
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -35,11 +13,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //Intentar singletoon
 ////////////////////////////////////////////////////////////////////////
 var con = mysql.createConnection({
-  host: "ec2-54-243-235-153.compute-1.amazonaws.com",
-  user: "fekjsstwxzeuxz",
-  password: "68deb33a54d12d8fd255f0581efc1f6cfb2b8523c8118abf4f86f5518935e85f",
-  database: "ddr803gnq42grm",
-  port: 5432
+  host: "localhost",
+  user: "root",
+  password: "Contrasenya9",
+  database: "NaiBoy_bbdd"
 });
 ////////////////////////////////////////////////////////////////////////
 
@@ -47,7 +24,7 @@ app.set('view engine', 'pug');
 app.use(express.static('public'));
 
 app.get('/', function (req, res) {
-  res.render('index', { title: 'Login', message: 'Inicia la sessio' })
+  res.render('login', { title: 'Login', message: 'Inicia la sessio' })
 })
 
 app.get('/registro', function (req, res) {
@@ -58,24 +35,6 @@ app.get('/logout', function (req, res) {
    res.render('registro', { title: 'Registro', message: 'Hello there!' })
    con.query("UPDATE users SET status = '0' WHERE status = 1 AND name='"+username+"'AND password='"+password+"';");
 })
-
-/*app.post('/signup', async (req, res) => {
-  try {
-    const client = await pool.connect()
-    const result = await client.query("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", [req.body.name, req.body.email, req.body.password]);
-    res.redirect('/');
-    console.log('Se ha insertado el usuario correctamente!');
-    client.release();
-  } catch (err) {
-    console.error(err);
-    res.send("Error " + err);
-  }
-});*/
-
-
-
-
-
 
 app.post('/signup', function (req, res) {
 
@@ -238,10 +197,6 @@ io.on('connection', function(socket){
 server.listen(3000, function(){
   console.log('listening on *:3000');
 });
-
-//
-const PORT = process.env.PORT || 5000
-app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 
 function getAllPlayers(){

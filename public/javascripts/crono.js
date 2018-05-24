@@ -101,5 +101,5 @@ Crono.time = function(){
 
 	Crono.timeC = (Crono.minutos*60) + (Crono.segundos*90) + Crono.centesimas;
 
-	return {time: time, timeC: timeC};
+	return {time: Crono.time, timeC: Crono.timeC};
 }

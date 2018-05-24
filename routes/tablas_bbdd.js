@@ -1,11 +1,10 @@
 var mysql = require('mysql');
 
 var con = mysql.createConnection({
-  host: "ec2-54-243-235-153.compute-1.amazonaws.com",
-  user: "fekjsstwxzeuxz",
-  password: "68deb33a54d12d8fd255f0581efc1f6cfb2b8523c8118abf4f86f5518935e85f",
-  database: "ddr803gnq42grm",
-  port: 5432
+  host: "localhost",
+  user: "root",
+  password: "Contrasenya9",
+  database: "NaiBoy_bbdd"
 });
 
 /*Funcion conectar*/
