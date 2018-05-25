@@ -38,11 +38,6 @@ app.get('/registro', function (req, res) {
    res.render('registro', { title: 'Registro', message: 'Hello there!' })
 })
 
-app.get('/logout', function (req, res) {
-   res.render('registro', { title: 'Registro', message: 'Hello there!' })
-   con.query("UPDATE users SET status = '0' WHERE status = 1 AND name='"+username+"'AND password='"+password+"';");
-})
-
 app.post('/signup', function (req, res) {
 
     con.query("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", [req.body.name, req.body.email, req.body.password],
@@ -93,6 +88,22 @@ app.post('/entrar', function (req, res) {
                  });                
             });
         }
+    });
+})
+
+app.get('/ranking', function (req, res) {
+    var id = req.body.id;
+    var tiempo = req.body.time;
+
+    con.query("INSERT INTO ranking (id_user, tiempo_partida) VALUES (?, ?)", [id, tiempo],
+     function(err, result){
+        if (err){
+            throw err;
+        }
+        else{
+            res.redirect('/');
+            console.log('Se ha insertado los datos correctamente!');
+        }  
     });
 })
 
