@@ -91,6 +91,22 @@ app.post('/entrar', function (req, res) {
     });
 })
 
+app.get('/ranking', function (req, res) {
+    var id = req.body.id;
+    var tiempo = req.body.time;
+
+    con.query("INSERT INTO ranking (id_user, tiempo_partida) VALUES (?, ?)", [id, tiempo],
+     function(err, result){
+        if (err){
+            throw err;
+        }
+        else{
+            res.redirect('/');
+            console.log('Se ha insertado los datos correctamente!');
+        }  
+    });
+})
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 server.lastPlayderID = 0;
