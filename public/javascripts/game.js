@@ -53,7 +53,7 @@ Game.create = function(){
 Game.update = function(){
     Game.detecteKey();
     //Game.bounceObstacle();
-    Game.bouncePlayer();
+    //Game.bouncePlayer();
 };
 
 
