@@ -229,8 +229,10 @@ Client.removeObstacle = function(){
 ** Salida: NULL
 */
 Client.socket.on('newobstacle',function(data){
-    Game.addNewObstacle(data.id,data.x,data.y, data.type);
-    Game.moveObstacle(data.id, data.velocityX, data.velocityY);
+    if(Game.arrayObstaclesMap.length < 7){
+        Game.addNewObstacle(data.id,data.x,data.y, data.type);
+        Game.moveObstacle(data.id, data.velocityX, data.velocityY);
+    }
 });
 
 /*
@@ -243,8 +245,10 @@ Client.socket.on('allobstacles',function(data){
 
     //Bucle que crea y mueve todos los obstaculos que se hayan creado en la partida.
     for(var i = 0; i < data.length; i++){
-        Game.addNewObstacle(data[i].id,data[i].x,data[i].y,data[i].type);
-        Game.moveObstacle(data[i].id, data[i].velocityX, data[i].velocityY, data[i].directionX, data[i].directionY);
+        if(Game.arrayObstaclesMap.length < 7){
+            Game.addNewObstacle(data[i].id,data[i].x,data[i].y,data[i].type);
+            Game.moveObstacle(data[i].id, data[i].velocityX, data[i].velocityY, data[i].directionX, data[i].directionY);
+        }
     }
 
     /*
