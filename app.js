@@ -71,13 +71,13 @@ app.post('/entrar', function (req, res) {
             console.log('Conexion correcta!');
             con.query("UPDATE users SET status = '1' WHERE status = 0 AND name='"+username+"'AND password='"+password+"';");
 
-            con.query("SELECT * FROM users WHERE status = 1", function(err, result){
+            con.query("SELECT * FROM users WHERE status = 1 AND id = "+result[0].id+";", function(err, connectados){
                 var array = [];
 
-                if(result.length == 0){
+                if(connectados.length == 0){
                     array.push('No hay usuarios conectados');
-                }else if(result.length >= 1){
-                    for(var i=0; i < result.length; i++){array.push(result[i].name);}
+                }else if(connectados.length >= 1){
+                    for(var i=0; i < connectados.length; i++){array.push(connectados    [i].name);}
                 }
 
                 con.query("SELECT u.name, r.tiempo_partida FROM ranking r, users u WHERE u.id = r.id_user ORDER BY r.tiempo_partida ASC LIMIT 3;",
