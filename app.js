@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "Contrasenya9",
+  password: "mysql1234",
   database: "NaiBoy_bbdd"
 });
 ////////////////////////////////////////////////////////////////////////
@@ -23,8 +23,15 @@ var con = mysql.createConnection({
 app.set('view engine', 'pug');
 app.use(express.static('public'));
 
-app.get('/', function (req, res) {
-  res.render('login', { title: 'Login', message: 'Inicia la sessio' })
+app.get('/', function (req, res) { 
+    res.render('login', { title: 'Login', message: 'Inicia la sessio' })
+})
+
+app.get('/logout', function(req, res){
+    var id = req.body.id;
+
+    con.query("UPDATE users SET status = '0' WHERE status = 1 AND id='"+id+"';");
+    res.render('login', { title: 'Login', message: 'Inicia la sessio' })
 })
 
 app.get('/registro', function (req, res) {
@@ -55,10 +62,10 @@ app.post('/entrar', function (req, res) {
     var username = req.body.name;
     var password = req.body.password;
 
-    con.query("SELECT name, password FROM users WHERE name='"+username+"'AND password='"+password+"';", 
+    con.query("SELECT id, name, password FROM users WHERE name='"+username+"'AND password='"+password+"';", 
         function(err, result){
         if(result.length == 0){
-            res.redirect('/');
+            res.render('login', { title: 'Login', message: 'El usuario o la contraseña no es correcta.' })
         }else if(result.length == 1){
 
             console.log('Conexion correcta!');
@@ -82,13 +89,12 @@ app.post('/entrar', function (req, res) {
                         rankingArray.push(textRanking);
                     }
 
-                    res.render('index', { title: 'Hey', message: 'Hello there!!', values: array, ranking: rankingArray});
+                    res.render('index', { title: 'Hey', message: 'Hello there!!', idUser: result[0].id,values: array, ranking: rankingArray});
                  });                
             });
         }
     });
 })
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
