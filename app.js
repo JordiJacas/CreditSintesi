@@ -20,7 +20,6 @@ var con = mysql.createConnection({
 });
 ////////////////////////////////////////////////////////////////////////
 
-
 app.set('view engine', 'pug');
 app.use(express.static('public'));
 
@@ -29,13 +28,19 @@ app.get('/', function (req, res) {
 })
 
 app.get('/logout', function(req, res){
+    var id = req.body.id;
 
     con.query("UPDATE users SET status = '0' WHERE status = 1 AND id='"+id+"';");
-    //res.render('login', { title: 'Login', message: 'Inicia la sessio' })
+    res.render('login', { title: 'Login', message: 'Inicia la sessio' })
 })
 
 app.get('/registro', function (req, res) {
    res.render('registro', { title: 'Registro', message: 'Hello there!' })
+})
+
+app.get('/logout', function (req, res) {
+   res.render('registro', { title: 'Registro', message: 'Hello there!' })
+   con.query("UPDATE users SET status = '0' WHERE status = 1 AND name='"+username+"'AND password='"+password+"';");
 })
 
 app.post('/signup', function (req, res) {
@@ -66,13 +71,13 @@ app.post('/entrar', function (req, res) {
             console.log('Conexion correcta!');
             con.query("UPDATE users SET status = '1' WHERE status = 0 AND name='"+username+"'AND password='"+password+"';");
 
-            con.query("SELECT * FROM users WHERE status = 1 AND id != " +result[0].id+";", function(err, conectados){
+            con.query("SELECT * FROM users WHERE status = 1", function(err, result){
                 var array = [];
 
-                if(conectados.length == 0){
+                if(result.length == 0){
                     array.push('No hay usuarios conectados');
-                }else if(conectados.length >= 1){
-                    for(var i=0; i < conectados.length; i++){array.push(conectados[i].name);}
+                }else if(result.length >= 1){
+                    for(var i=0; i < result.length; i++){array.push(result[i].name);}
                 }
 
                 con.query("SELECT u.name, r.tiempo_partida FROM ranking r, users u WHERE u.id = r.id_user ORDER BY r.tiempo_partida ASC LIMIT 3;",
@@ -84,26 +89,10 @@ app.post('/entrar', function (req, res) {
                         rankingArray.push(textRanking);
                     }
 
-                    res.render('index', { title: 'Hey', message: 'Hello there!!', idUser: result[0].id, values: array, ranking: rankingArray});
+                    res.render('index', { title: 'Hey', message: 'Hello there!!', idUser: result[0].id,values: array, ranking: rankingArray});
                  });                
             });
         }
-    });
-})
-
-app.get('/ranking', function (req, res) {
-    var id = req.body.id;
-    var tiempo = req.body.time;
-
-    con.query("INSERT INTO ranking (id_user, tiempo_partida) VALUES (?, ?)", [id, tiempo],
-     function(err, result){
-        if (err){
-            throw err;
-        }
-        else{
-            res.redirect('/');
-            console.log('Se ha insertado los datos correctamente!');
-        }  
     });
 })
 
@@ -211,8 +200,8 @@ io.on('connection', function(socket){
     });
 });
    
-server.listen(8081, function(){
-  console.log('listening on *:8081');
+server.listen(3000, function(){
+  console.log('listening on *:3000');
 });
 
 
