@@ -33,7 +33,8 @@ block content
  #Logout.tabcontent
    span.topright(onclick="this.parentElement.style.display='none'") x
    h3 Gracias por visitarnos!
-   form(method='get', action="/logout")
+    form(method='get', action="/logout")
+     p(id='idUser') #{idUser}
      input(type='submit' class='btn btn-primary' value='Salir')
  
  button#start(class='btn btn-success' onclick="Main.startGame()") Start Game

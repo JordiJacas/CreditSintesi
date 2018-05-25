@@ -98,6 +98,5 @@ Main.hideModal = function(){
     
     //Ocultar modal y mostrar bonton de jugar.
     $("#formModal").modal("hide");
-    $('#start').show(); 
-	
+    $('#start').show(); 	
 }

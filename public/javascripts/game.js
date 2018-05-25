@@ -139,7 +139,7 @@ Game.movePlayer = function(id, direction){
         else if(direction === 'up'){Game.playerMap[id].y -= Game.velocity;}
         else if(direction === 'down'){Game.playerMap[id].y += Game.velocity;}
 
-        Client.savePositionPlayer(Game.playerMap[id].x, Game.playerMap[id].y); 
+        //Client.savePositionPlayer(Game.playerMap[id].x, Game.playerMap[id].y); 
     }
 };
 
