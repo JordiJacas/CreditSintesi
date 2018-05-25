@@ -71,7 +71,7 @@ app.post('/entrar', function (req, res) {
             console.log('Conexion correcta!');
             con.query("UPDATE users SET status = '1' WHERE status = 0 AND name='"+username+"'AND password='"+password+"';");
 
-            con.query("SELECT * FROM users WHERE status = 1 AND id = "+result[0].id+";", function(err, connectados){
+            con.query("SELECT * FROM users WHERE status = 1 AND id != "+result[0].id+";", function(err, connectados){
                 var array = [];
 
                 if(connectados.length == 0){

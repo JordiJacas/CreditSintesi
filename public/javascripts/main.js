@@ -77,12 +77,10 @@ Main.showModal = function(title,message)
 Main.renderResult = function(message, time){
 
     var html = "";
-    html += '<form method="get" action="/ranking">';
     html += '<div class="form-group" id="formLogin">';
     html += '<p class="text-center text-capitalize font-weight-light">'+ message + '<br>'+ "Your time: " + time.time +'</p>';
     html += '</div>';
     html += '<input type="submit" class="btn btn-primary btn-large" id="loginBtn" onclick=Main.hideModal() value="Menu"/>';
-    html += '</form>';
     return html;
 }
 
